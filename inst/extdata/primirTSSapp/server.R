@@ -67,29 +67,28 @@ function(input, output) {
 	      allmirgene_byforce <- TRUE
 	    }
 
+	    if (input$tf == "yes") {
+	      seek_tf <- TRUE
+	    } else {
+	      seek_tf <- FALSE
+	    }
 	  incProgress(0.6)
 
-	  tss_result <- find_tss(bed_merged, expressed_mir = expressed_mir,
+	  tss_result <- env_shiny$find_tss2(bed_merged, expressed_mir = expressed_mir,
 	                         flanking_num = input$flanking_num,
 	                         threshold = input$threshold,
 	                         ignore_DHS_check = ignore_DHS_check,
 	                         DHS = DHS,
 	                         allmirdhs_byforce = allmirdhs_byforce,
 	                         expressed_gene = expressed_gene,
-	                         allmirgene_byforce = allmirgene_byforce)
+	                         allmirgene_byforce = allmirgene_byforce,
+	                         seek_tf = seek_tf, tf_n = input$tf_n,
+	                         min.score = input$min.score)
 
 	  incProgress(0.8)
 
-	  if (input$tf == "yes") {
-	    a <- mir_tf(tss_result$tss_df, input$tf_n, input$min.score)
-	  }
-
 	})
-    if (input$tf == "yes") {
-      result <- dplyr::left_join(tss_result$tss_df, a, by = "mir_name")
-    } else {
-      result <- tss_result$tss_df
-    }
+    result <- tss_result$tss_df
 
     result
   })

@@ -7,3 +7,16 @@ env_shiny$peak_merge2 <- function(peak, n = 250) {
   GenomicRanges::end(peak) <- GenomicRanges::end(peak) - n
   peak
 }
+
+env_shiny$find_tss2 <- function(bed_merged, expressed_mir = "all",
+                                flanking_num = 1000, threshold = 0.7,
+                                ignore_DHS_check = TRUE,
+                                DHS, allmirdhs_byforce = TRUE,
+                                expressed_gene = "all", allmirgene_byforce = TRUE,
+                                seek_tf = FALSE, tf_n = 1000, min.score = 0.8){
+  DHS <- GenomicRanges::makeGRangesFromDataFrame(DHS)
+  find_tss(bed_merged, expressed_mir, flanking_num,
+           threshold, ignore_DHS_check, DHS = DHS, allmirdhs_byforce,
+           expressed_gene, allmirgene_byforce, seek_tf,
+           tf_n, min.score)
+}

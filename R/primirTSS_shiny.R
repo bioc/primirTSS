@@ -7,10 +7,7 @@
 #' Users can refer documents of the two functions mentioned ABOVE for details.
 
 #' @examples
-#'
-#' \dontrun{
 #' run_primirTSSapp()
-#'}
 #'
 #' @export
 run_primirTSSapp <- function() {

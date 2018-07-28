@@ -12,13 +12,46 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
 
   genome_version <- "hg38"
   mir_peaks <- find_nearest_peak(bed_merged, expressed_mir)
-  mir_eponine_score <- eponine_score(mir_peaks$success, flanking_num, threshold)
-  candidate_tss <- find_candidate_tss(mir_eponine_score$success, ignore_DHS_check,
+  mir_eponine_score <- eponine_score(mir_peaks$success$mir_name,
+                                     mir_peaks$success$chrom,
+                                     mir_peaks$success$stem_loop_p1,
+                                     mir_peaks$success$stem_loop_p2,
+                                     mir_peaks$success$strand,
+                                     mir_peaks$success$peak_p1,
+                                     mir_peaks$success$peak_p2,
+                                     flanking_num, threshold)
+
+  candidate_tss <- find_candidate_tss(mir_eponine_score$success$mir_name,
+                                      mir_eponine_score$success$chrom,
+                                      mir_eponine_score$success$stem_loop_p1,
+                                      mir_eponine_score$success$stem_loop_p2,
+                                      mir_eponine_score$success$strand,
+                                      mir_eponine_score$success$tss_p1,
+                                      mir_eponine_score$success$tss_p2,
+                                      mir_eponine_score$success$eponine_score,
+                                      ignore_DHS_check,
                                       DHS, allmirdhs_byforce)
-  tss_list <- tss_filter(candidate_tss$mir_df, expressed_gene, allmirgene_byforce)
+
+  tss_list <- tss_filter(candidate_tss$mir_df$mir_name,
+                         candidate_tss$mir_df$chrom,
+                         candidate_tss$mir_df$stem_loop_p1,
+                         candidate_tss$mir_df$stem_loop_p2,
+                         candidate_tss$mir_df$strand,
+                         candidate_tss$mir_df$tss_p1,
+                         candidate_tss$mir_df$tss_p2,
+                         expressed_gene, allmirgene_byforce)
+
   tss <- tss_list$tss_df
 
-  ep_con <- find_candidate_tss_plot(mir_eponine_score$success, ignore_DHS_check,
+  ep_con <- find_candidate_tss_plot(mir_eponine_score$success$mir_name,
+                                    mir_eponine_score$success$chrom,
+                                    mir_eponine_score$success$stem_loop_p1,
+                                    mir_eponine_score$success$stem_loop_p2,
+                                    mir_eponine_score$success$strand,
+                                    mir_eponine_score$success$tss_p1,
+                                    mir_eponine_score$success$tss_p2,
+                                    mir_eponine_score$success$eponine_score,
+                                    ignore_DHS_check,
                                     DHS, allmirdhs_byforce)
 
   tss_tmp <- tss %>%

@@ -165,6 +165,7 @@
 #' peak_df <- read.csv(peakfile, stringsAsFactors = FALSE)
 #' peak <- as(peak_df, "GRanges")
 #' DHS <- read.csv(DHSfile, stringsAsFactors = FALSE)
+#' DHS <- as(DHS, "GRanges")
 #' no_ownmiRNA <- find_tss(peak,
 #'                         ignore_DHS_check = FALSE,
 #'                         DHS = DHS,
@@ -181,10 +182,35 @@ find_tss <- function(bed_merged, expressed_mir = "all",
                      seek_tf = FALSE, tf_n = 1000, min.score = 0.8) {
 
   h3_mir_flank <- find_nearest_peak(bed_merged, expressed_mir)
-  mir_eponine_score <- eponine_score(h3_mir_flank$success, flanking_num, threshold)
-  candidate_tss <- find_candidate_tss(mir_eponine_score$success, ignore_DHS_check,
+
+  mir_eponine_score <- eponine_score(h3_mir_flank$success$mir_name,
+                                     h3_mir_flank$success$chrom,
+                                     h3_mir_flank$success$stem_loop_p1,
+                                     h3_mir_flank$success$stem_loop_p2,
+                                     h3_mir_flank$success$strand,
+                                     h3_mir_flank$success$peak_p1,
+                                     h3_mir_flank$success$peak_p2,
+                                     flanking_num, threshold)
+
+  candidate_tss <- find_candidate_tss(mir_eponine_score$success$mir_name,
+                                      mir_eponine_score$success$chrom,
+                                      mir_eponine_score$success$stem_loop_p1,
+                                      mir_eponine_score$success$stem_loop_p2,
+                                      mir_eponine_score$success$strand,
+                                      mir_eponine_score$success$tss_p1,
+                                      mir_eponine_score$success$tss_p2,
+                                      mir_eponine_score$success$eponine_score,
+                                      ignore_DHS_check,
                                       DHS, allmirdhs_byforce)
-  gene_fliter_tss <- tss_filter(candidate_tss$mir_df, expressed_gene, allmirgene_byforce)
+
+  gene_fliter_tss <- tss_filter(candidate_tss$mir_df$mir_name,
+                                candidate_tss$mir_df$chrom,
+                                candidate_tss$mir_df$stem_loop_p1,
+                                candidate_tss$mir_df$stem_loop_p2,
+                                candidate_tss$mir_df$strand,
+                                candidate_tss$mir_df$tss_p1,
+                                candidate_tss$mir_df$tss_p2,
+                                expressed_gene, allmirgene_byforce)
 
   if (any(h3_mir_flank$fail_nearpeak != "No one miRNA fail to find its nearest peaks")) {
     if (length(h3_mir_flank$fail_nearpeak) == 1) {
@@ -236,7 +262,10 @@ find_tss <- function(bed_merged, expressed_mir = "all",
   }
 
   if (seek_tf == TRUE) {
-    a <- mir_tf(gene_fliter_tss$tss_df, tf_n, min.score)
+    a <- mir_tf(gene_fliter_tss$tss_df$mir_name, gene_fliter_tss$tss_df$chrom,
+                gene_fliter_tss$tss_df$strand, gene_fliter_tss$tss_df$predicted_tss,
+                tf_n, min.score)
+
     result <- dplyr::left_join(gene_fliter_tss$tss_df, a, by = "mir_name")
   } else {
     result <- gene_fliter_tss$tss_df

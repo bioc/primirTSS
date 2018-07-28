@@ -4,7 +4,17 @@
 #' @importFrom dplyr group_by
 #' @importFrom dplyr ungroup
 
-phast_score <- function(mir_eponine_score) {
+
+phast_score <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
+                        strand, tss_p1, tss_p2, eponine_score) {
+
+  mir_eponine_score <- data_frame(mir_name = mir_name, chrom = chrom,
+                                  stem_loop_p1 = stem_loop_p1,
+                                  stem_loop_p2 = stem_loop_p2,
+                                  strand = strand, tss_p1 = tss_p1,
+                                  tss_p2 = tss_p2,
+                                  eponine_score = eponine_score)
+
   phast <- phastCons100way.UCSC.hg38
 
   score_s <- function(loci) {
@@ -23,7 +33,16 @@ phast_score <- function(mir_eponine_score) {
     select(-(loci:e_p_rank), -eponine_score)
 }
 
-phast_score_plot <- function(mir_eponine_score) {
+phast_score_plot <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
+                             strand, tss_p1, tss_p2, eponine_score) {
+
+  mir_eponine_score <- data_frame(mir_name = mir_name, chrom = chrom,
+                                  stem_loop_p1 = stem_loop_p1,
+                                  stem_loop_p2 = stem_loop_p2,
+                                  strand = strand, tss_p1 = tss_p1,
+                                  tss_p2 = tss_p2,
+                                  eponine_score = eponine_score)
+
   phast <- phastCons100way.UCSC.hg38
 
   score_s <- function(loci) {
@@ -47,7 +66,12 @@ phast_score_plot <- function(mir_eponine_score) {
 #'
 check_DHS_s <- function(chrom, strand, tss_p1, tss_p2, DHS) {
 
-  colnames(DHS) <- c("chrom", "dhs_p1", "dhs_p2")
+  DHS <- as.data.frame(DHS)
+  DHS <- DHS %>%
+    mutate(chrom = as.character(seqnames),
+           dhs_p1 = as.double(start),
+           dhs_p2 = as.double(end)) %>%
+    select(chrom, dhs_p1, dhs_p2)
 
   if (strand == "+") {
     DHS_d <- DHS %>%
@@ -76,7 +100,15 @@ check_DHS_s <- function(chrom, strand, tss_p1, tss_p2, DHS) {
   result
 }
 
-check_DHS_df <- function(x, DHS) {
+check_DHS_df <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
+                         strand, tss_p1, tss_p2, eponine_score, DHS) {
+
+  x <- data_frame(mir_name = mir_name, chrom = chrom,
+                  stem_loop_p1 = stem_loop_p1,
+                  stem_loop_p2 = stem_loop_p2,
+                  strand = strand, tss_p1 = tss_p1,
+                  tss_p2 = tss_p2,
+                  eponine_score = eponine_score)
   candidate_tss <- x %>%
     select(chrom, strand, tss_p1, tss_p2) %>%
     pmap(check_DHS_s, DHS) %>%
@@ -108,23 +140,36 @@ check_DHS_df <- function(x, DHS) {
 }
 
 
-find_candidate_tss <- function(mir_eponine_score, ignore_DHS_check = TRUE,
+find_candidate_tss <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
+                               strand, tss_p1, tss_p2, eponine_score,
+                               ignore_DHS_check = TRUE,
                                DHS, allmirdhs_byforce = TRUE) {
 
-  colnames(mir_eponine_score) <- c("mir_name", "chrom",
-                                   "stem_loop_p1", "stem_loop_p2", "strand",
-                                   "tss_p1", "tss_p2", "eponine_score")
+  mir_eponine_score <- data_frame(mir_name = mir_name, chrom = chrom,
+                                  stem_loop_p1 = stem_loop_p1,
+                                  stem_loop_p2 = stem_loop_p2,
+                                  strand = strand, tss_p1 = tss_p1,
+                                  tss_p2 = tss_p2,
+                                  eponine_score = eponine_score)
 
   if (ignore_DHS_check == TRUE) {
 
-    a <- phast_score(mir_eponine_score)
+    a <- phast_score(mir_name, chrom, stem_loop_p1, stem_loop_p2,
+                     strand, tss_p1, tss_p2, eponine_score)
     fail <- "Do not have a DHS check"
   } else {
 
-    dhs_check <- check_DHS_df(mir_eponine_score, DHS)
+    dhs_check <- check_DHS_df(mir_name, chrom, stem_loop_p1, stem_loop_p2,
+                              strand, tss_p1, tss_p2, eponine_score, DHS)
+
     mir_eponine_score_s <- dhs_check$success
 
-    a <- phast_score(mir_eponine_score_s)
+    a <- phast_score(mir_eponine_score_s$mir_name, mir_eponine_score_s$chrom,
+                     mir_eponine_score_s$stem_loop_p1,
+                     mir_eponine_score_s$stem_loop_p2,
+                     mir_eponine_score_s$strand,
+                     mir_eponine_score_s$tss_p1, mir_eponine_score_s$tss_p2,
+                     mir_eponine_score_s$eponine_score)
 
     if (is.null(dhs_check$fail_DHS)) {
       fail <- "All miRNA have DHS verified"
@@ -135,7 +180,11 @@ find_candidate_tss <- function(mir_eponine_score, ignore_DHS_check = TRUE,
     if (allmirdhs_byforce == TRUE && !is.null(dhs_check$fail_DHS)) {
       new_mir_tss_df2 <- mir_eponine_score %>%
         filter(mir_name %in% dhs_check$fail_DHS)
-      b <- phast_score(new_mir_tss_df2)
+      b <- phast_score(new_mir_tss_df2$mir_name, new_mir_tss_df2$chrom,
+                       new_mir_tss_df2$stem_loop_p1,
+                       new_mir_tss_df2$stem_loop_p2, new_mir_tss_df2$strand,
+                       new_mir_tss_df2$tss_p1, new_mir_tss_df2$tss_p2,
+                       new_mir_tss_df2$eponine_score)
       a <- bind_rows(a, b)
     }
   }
@@ -145,25 +194,37 @@ find_candidate_tss <- function(mir_eponine_score, ignore_DHS_check = TRUE,
 
 
 
-find_candidate_tss_plot <- function(mir_eponine_score, ignore_DHS_check = TRUE,
+find_candidate_tss_plot <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
+                                    strand, tss_p1, tss_p2, eponine_score,
+                                    ignore_DHS_check = TRUE,
                                     DHS, allmirdhs_byforce = TRUE) {
 
-  colnames(mir_eponine_score) <- c("mir_name", "chrom",
-                                   "stem_loop_p1", "stem_loop_p2", "strand",
-                                   "tss_p1", "tss_p2", "eponine_score")
+  mir_eponine_score <- data_frame(mir_name = mir_name, chrom = chrom,
+                                  stem_loop_p1 = stem_loop_p1,
+                                  stem_loop_p2 = stem_loop_p2,
+                                  strand = strand, tss_p1 = tss_p1,
+                                  tss_p2 = tss_p2,
+                                  eponine_score = eponine_score)
 
 
   if (ignore_DHS_check == TRUE) {
-    a <- phast_score_plot(mir_eponine_score)
+    a <- phast_score_plot(mir_name, chrom, stem_loop_p1, stem_loop_p2,
+                          strand, tss_p1, tss_p2, eponine_score)
 
   } else {
 
-    dhs_check <- check_DHS_df(mir_eponine_score, DHS)
+    dhs_check <- check_DHS_df(mir_name, chrom, stem_loop_p1, stem_loop_p2,
+                              strand, tss_p1, tss_p2, eponine_score, DHS)
 
     if (is.null(dhs_check$fail_DHS)) {
-      a <- phast_score_plot(dhs_check$success)
+      a <- phast_score_plot(dhs_check$success$mir_name, dhs_check$success$chrom,
+                            dhs_check$success$stem_loop_p1, dhs_check$success$stem_loop_p2,
+                            dhs_check$success$strand,
+                            dhs_check$success$tss_p1, dhs_check$success$tss_p2,
+                            dhs_check$success$eponine_score)
     } else if (allmirdhs_byforce == TRUE) {
-      a <- phast_score_plot(mir_eponine_score)
+      a <- phast_score_plot(mir_name, chrom, stem_loop_p1, stem_loop_p2,
+                            strand, tss_p1, tss_p2, eponine_score)
     } else{
       stop("The miRNA you selected failed to pass the DHS check.
            If you want to have the plot anyway,

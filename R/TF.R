@@ -1,39 +1,3 @@
-#' Search for putative TFs that regulate miRNA
-#'
-#' With the putative TSSs of miRNA by \code{\link{find_tss}}, we can further
-#' predict transcription factor bind sites by integrating TF motif data from
-#' JASPAR2018 and predict transcriptional regulation relationship between TF and
-#' miRNA. NOTICE this process may take relatively long time.
-#'
-#'
-#' \code{tss_df} is a data.frame containing as least four columns. These four
-#' columns are \code{mir_name}, \code{chrom}, \code{strand} and
-#' \code{predicted_tss}.
-#'
-#' \code{tf_n} means that we will find TFs in upstream tf_n bps from predicted
-#' TSSs, which default is 1000.
-#'
-#' @param tss_df A data.frame. Putative TSSs of miRNA predicted by
-#'   \code{\link{find_tss}}.
-#' @param tf_n A number. The length of promoter region of miRNA for prediction
-#'   of TFBS.
-#' @param min.score A single absolute value between 0 and 1. Threshold for
-#'   scoring transcription factor binding sites. See also:
-#'   \code{\link[TFBSTools]{searchSeq}}.
-#'
-#' @return A data.frame. The transcriptional regulation relationship between TF
-#'   and miRNA.
-#'
-#' @examples
-#'
-#' tss_df <- data.frame(
-#'                 mir_name = c("hsa-mir-5697", "hsa-mir-192"),
-#'                 chrom = c("chr1", "chr11"),
-#'                 strand = c("+", "-"),
-#'                 predicted_tss = c(10003486, 64683600),
-#'                 stringsAsFactors = FALSE)
-#' tf <- mir_tf(tss_df, tf_n = 1000)
-#'
 #' @importFrom TFBSTools getMatrixSet
 #' @importFrom TFBSTools toPWM
 #' @importFrom Biostrings readDNAStringSet
@@ -43,10 +7,16 @@
 #' @importFrom tibble as_tibble
 #' @importFrom JASPAR2018 JASPAR2018
 #'
-#' @export
 
 
-mir_tf <- function(tss_df, tf_n = 1000, min.score = 0.8) {
+mir_tf <- function(mir_name, chrom, strand, predicted_tss,
+                   tf_n = 1000, min.score = 0.8) {
+
+  tss_df <- data_frame(mir_name = mir_name,
+                       chrom = chrom,
+                       strand = strand,
+                       predicted_tss = predicted_tss)
+
   a <- tss_df %>%
     select(mir_name, chrom, strand, predicted_tss)
 

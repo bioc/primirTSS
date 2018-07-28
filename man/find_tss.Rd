@@ -177,6 +177,7 @@ DHSfile <- system.file("testdata", "HMEC_DHS.csv", package = "primirTSS")
 peak_df <- read.csv(peakfile, stringsAsFactors = FALSE)
 peak <- as(peak_df, "GRanges")
 DHS <- read.csv(DHSfile, stringsAsFactors = FALSE)
+DHS <- as(DHS, "GRanges")
 no_ownmiRNA <- find_tss(peak,
                         ignore_DHS_check = FALSE,
                         DHS = DHS,

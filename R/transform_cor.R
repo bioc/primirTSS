@@ -25,6 +25,7 @@
 #' @importFrom R.utils gunzip
 #' @importFrom rtracklayer import.chain
 #' @importFrom rtracklayer liftOver
+#' @importFrom utils download.file
 #'
 #' @export
 
