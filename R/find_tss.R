@@ -153,7 +153,7 @@
 #' peak <- as(peak_df, "GRanges")
 #' DHS <- read.csv(DHSfile, stringsAsFactors = FALSE)
 #' DHS <- as(DHS, "GRanges")
-#' \donttest{
+#' \dontrun{
 #' no_ownmiRNA <- find_tss(peak,
 #'                         ignore_DHS_check = FALSE,
 #'                         DHS = DHS,
