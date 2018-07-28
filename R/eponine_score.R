@@ -71,9 +71,7 @@ eponine_score <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
 
   java_path <- system.file("extdata", "eponine-scan.jar", package = "primirTSS")
   cmd <- sprintf("java -jar %s -seq %s -threshold %s",
-                 java_path,
-                 tmp_path,
-                 threshold)
+                 java_path, tmp_path, threshold)
   aa <- system(cmd, intern = TRUE)
 
   file.remove(tmp_path)

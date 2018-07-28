@@ -18,6 +18,9 @@ conveniently predict putative TSSs of miRNA.
 Users can refer documents of the two functions mentioned ABOVE for details.
 }
 \examples{
+
+\dontrun{
 run_primirTSSapp()
+}
 
 }

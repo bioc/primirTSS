@@ -153,13 +153,14 @@
 #' peak <- as(peak_df, "GRanges")
 #' DHS <- read.csv(DHSfile, stringsAsFactors = FALSE)
 #' DHS <- as(DHS, "GRanges")
-#' # no_ownmiRNA <- find_tss(peak,
-#' #                         ignore_DHS_check = FALSE,
-#' #                         DHS = DHS,
-#' #                         allmirdhs_byforce = FALSE,
-#' #                         expressed_gene = "all",
-#' #                         allmirgene_byforce = FALSE)
-#'
+#' \donttest{
+#' no_ownmiRNA <- find_tss(peak,
+#'                         ignore_DHS_check = FALSE,
+#'                         DHS = DHS,
+#'                         allmirdhs_byforce = FALSE,
+#'                         expressed_gene = "all",
+#'                         allmirgene_byforce = FALSE)
+#' }
 #'
 #' @export
 find_tss <- function(bed_merged, expressed_mir = "all",

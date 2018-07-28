@@ -9,7 +9,10 @@
 #' @return A graphical interfaces.
 #'
 #' @examples
+#'
+#' \dontrun{
 #' run_primirTSSapp()
+#' }
 #'
 #' @export
 run_primirTSSapp <- function() {
