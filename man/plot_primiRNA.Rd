@@ -89,7 +89,7 @@ bed_merged <- data.frame(
   stringsAsFactors = FALSE
 )
 bed_merged <- as(bed_merged, "GRanges")
-\dontrun{
+\donttest{
 plot_primiRNA(expressed_mir, bed_merged)
 }
 

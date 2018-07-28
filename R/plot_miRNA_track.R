@@ -193,7 +193,7 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
 #'   stringsAsFactors = FALSE
 #' )
 #' bed_merged <- as(bed_merged, "GRanges")
-#' \dontrun{
+#' \donttest{
 #' plot_primiRNA(expressed_mir, bed_merged)
 #' }
 #'
