@@ -134,7 +134,7 @@
 #'
 #'
 #' @examples
-#' \dontrun{
+#'
 #' bed_merged <- data.frame(
 #'                 chrom = c("chr1", "chr1", "chr1", "chr1", "chr2"),
 #'                 start = c(9910686, 9942202, 9996940, 10032962, 9830615),
@@ -153,13 +153,13 @@
 #' peak <- as(peak_df, "GRanges")
 #' DHS <- read.csv(DHSfile, stringsAsFactors = FALSE)
 #' DHS <- as(DHS, "GRanges")
-#' no_ownmiRNA <- find_tss(peak,
-#'                         ignore_DHS_check = FALSE,
-#'                         DHS = DHS,
-#'                         allmirdhs_byforce = FALSE,
-#'                         expressed_gene = "all",
-#'                         allmirgene_byforce = FALSE)
-#' }
+#' # no_ownmiRNA <- find_tss(peak,
+#' #                         ignore_DHS_check = FALSE,
+#' #                         DHS = DHS,
+#' #                         allmirdhs_byforce = FALSE,
+#' #                         expressed_gene = "all",
+#' #                         allmirgene_byforce = FALSE)
+#'
 #'
 #' @export
 find_tss <- function(bed_merged, expressed_mir = "all",
