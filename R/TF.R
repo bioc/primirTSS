@@ -51,7 +51,9 @@ mir_tf <- function(mir_name, chrom, strand, predicted_tss,
   sitesetList <- searchSeq(pwms, fasta_read, strand="+", min.score)
   a_GFF <- writeGFF3(sitesetList)
   result <- a_GFF %>%
-    separate(attributes, into = c("TF", "TF_class", "TF_sequence"), sep = ";") %>%
+    separate(attributes,
+             into = c("TF", "TF_class", "TF_sequence"),
+             sep = ";") %>%
     select(seqname, TF, TF_class)
 
   result$TF <- str_remove(result$TF, "^TF=")

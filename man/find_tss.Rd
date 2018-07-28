@@ -65,8 +65,7 @@ considered as the promoter region. \code{tf_n} set the length of promoter
 region for predicting trancription regulation between miRNAs and TFs.}
 
 \item{min.score}{Threshold for scoring transcription factor binding sites. A
-single absolute value between 0 and 1. See also:
-\code{\link[TFBSTools]{searchSeq}}.}
+single absolute value between 0 and 1.}
 }
 \value{
 The first part of the result returns details of predicted TSSs,
@@ -158,18 +157,17 @@ and miRNA.
 }
 
 \examples{
+\dontrun{
 bed_merged <- data.frame(
                 chrom = c("chr1", "chr1", "chr1", "chr1", "chr2"),
                 start = c(9910686, 9942202, 9996940, 10032962, 9830615),
                 end = c(9911113, 9944469, 9998065, 10035458, 9917994),
                 stringsAsFactors = FALSE)
 bed_merged <- as(bed_merged, "GRanges")
-
 ownmiRNA <- find_tss(bed_merged, expressed_mir = "hsa-mir-5697",
                      ignore_DHS_check = TRUE,
                      expressed_gene = "all",
                      allmirgene_byforce = TRUE)
-
 
 
 peakfile <- system.file("testdata", "HMEC_h3.csv", package = "primirTSS")
@@ -184,5 +182,6 @@ no_ownmiRNA <- find_tss(peak,
                         allmirdhs_byforce = FALSE,
                         expressed_gene = "all",
                         allmirgene_byforce = FALSE)
+}
 
 }

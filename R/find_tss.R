@@ -11,57 +11,45 @@
 #'   only one kind of peak data, while peaks shoud be firstly merged and then
 #'   join together(see also \code{\link{peak_join}}) if both H3K4me3 data and
 #'   Pol II are input.
-#'
 #' @param expressed_mir This parameter allows users to specify certain miRNAs,
 #'   the TSSs of which they want to search for by providing a list of
 #'   miRNAs(e.g. expressed miRNAs in a certain cell-line). If
 #'   \code{expressed_mir} is not specified, the default value of the parameter
 #'   is "\code{all}" and the function will acquiescently employ all the miRNAs
 #'   currently listed on "\code{miRbase}" database.
-#'
 #' @param flanking_num A parameter in Eponine model to detect TSSs. It is
 #'   concluded that a peak signal with flanking regions of C-G enrichment are
 #'   important to mark TSSs. The default value is 1000.
-#'
 #' @param threshold Threshold for candidate TSSs scored with Eponine method. The
 #'   default value is 0.7.
-#'
 #' @param ignore_DHS_check The process of DHS_check further assist to filter
 #'   putative TSSs. When there are a DHS peak that locates within 1 kb upstream
 #'   of a putative TSS, this predicted TSS will be retain for it character is
 #'   consistent with that of an authentic TSS. Or the TSSs with no DHSs locating
 #'   within 1 kb upstream of them would be discard.
-#'
 #' @param DHS ChIP-seq data of DNase I hypersensitive sites(DHSs).
-#'
 #' @param allmirdhs_byforce When we use DHS data to check the validity of TSSs,
 #'   there is possibility where no DHSs locates within 1 kb upstream of all
 #'   putative TSSs and all these putative TSSs might be filtered out by our
 #'   method resulting no outputs. While "\code{allmirdhs_byforce} = TRUE", it
 #'   ensures to output at least 1 most possible TSS even if the nearest DHS
 #'   signal locates more than 1 kb upsteam of this TSS.
-#'
 #' @param expressed_gene Users can speicify genes expressed in certain
 #'   cell-lines that is analyzed. Or the default value is "\code{all}", which
 #'   means all the expressed genes annotated on Ensemble will be employed.
-#'
 #' @param allmirgene_byforce While integrating expressed_gene data to improve
 #'   prediction, there might be a circumstance where all the putative TSS are
 #'   discarded. To prevent this condition, user are allowed to use
 #'   "\code{allmirgene_byforce = TRUE}" to ensure at least 1 putative TSS for
 #'   each miRNA will be output.
-#'
 #' @param seek_tf With the result of predicted TSSs, seek_tf provides users with
 #'   an option to predict related TFs for miRNA. The data of transcription
 #'   fators refer to \code{JASPAR2018} database.
-#'
 #' @param tf_n TFBS locates on the upstream of the TSS of a certain TF, which is
 #'   considered as the promoter region. \code{tf_n} set the length of promoter
 #'   region for predicting trancription regulation between miRNAs and TFs.
-#'
 #' @param min.score Threshold for scoring transcription factor binding sites. A
-#'   single absolute value between 0 and 1. See also:
-#'   \code{\link[TFBSTools]{searchSeq}}.
+#'   single absolute value between 0 and 1.
 #'
 #'
 #'
@@ -146,18 +134,17 @@
 #'
 #'
 #' @examples
+#' \dontrun{
 #' bed_merged <- data.frame(
 #'                 chrom = c("chr1", "chr1", "chr1", "chr1", "chr2"),
 #'                 start = c(9910686, 9942202, 9996940, 10032962, 9830615),
 #'                 end = c(9911113, 9944469, 9998065, 10035458, 9917994),
 #'                 stringsAsFactors = FALSE)
 #' bed_merged <- as(bed_merged, "GRanges")
-#'
 #' ownmiRNA <- find_tss(bed_merged, expressed_mir = "hsa-mir-5697",
 #'                      ignore_DHS_check = TRUE,
 #'                      expressed_gene = "all",
 #'                      allmirgene_byforce = TRUE)
-#'
 #'
 #'
 #' peakfile <- system.file("testdata", "HMEC_h3.csv", package = "primirTSS")
@@ -172,6 +159,7 @@
 #'                         allmirdhs_byforce = FALSE,
 #'                         expressed_gene = "all",
 #'                         allmirgene_byforce = FALSE)
+#' }
 #'
 #' @export
 find_tss <- function(bed_merged, expressed_mir = "all",
@@ -212,9 +200,11 @@ find_tss <- function(bed_merged, expressed_mir = "all",
                                 candidate_tss$mir_df$tss_p2,
                                 expressed_gene, allmirgene_byforce)
 
-  if (any(h3_mir_flank$fail_nearpeak != "No one miRNA fail to find its nearest peaks")) {
+  if (any(h3_mir_flank$fail_nearpeak !=
+          "No one miRNA fail to find its nearest peaks")) {
     if (length(h3_mir_flank$fail_nearpeak) == 1) {
-      log_1 <- paste(h3_mir_flank$fail_nearpeak, "fail to find its nearest peaks", " ")
+      log_1 <- paste(h3_mir_flank$fail_nearpeak,
+                     "fail to find its nearest peaks", " ")
     } else {
       log_1 <- paste(h3_mir_flank$fail_nearpeak, collapse = ", ")
       log_1 <- paste(log_1, "fail to find their nearest peaks", " ")
@@ -225,7 +215,8 @@ find_tss <- function(bed_merged, expressed_mir = "all",
 
   if (any(mir_eponine_score$fail_eponine != "All miRNAs have eponine socres")) {
     if (length(mir_eponine_score$fail_eponine) == 1) {
-      log_2 <- paste(mir_eponine_score$fail_eponine, "fail to have eponine socres", " ")
+      log_2 <- paste(mir_eponine_score$fail_eponine,
+                     "fail to have eponine socres", " ")
     } else {
       log_2 <- paste(mir_eponine_score$fail_eponine, collapse = ", ")
       log_2 <- paste(log_2, "fail to have eponine socres", " ")
@@ -263,7 +254,8 @@ find_tss <- function(bed_merged, expressed_mir = "all",
 
   if (seek_tf == TRUE) {
     a <- mir_tf(gene_fliter_tss$tss_df$mir_name, gene_fliter_tss$tss_df$chrom,
-                gene_fliter_tss$tss_df$strand, gene_fliter_tss$tss_df$predicted_tss,
+                gene_fliter_tss$tss_df$strand,
+                gene_fliter_tss$tss_df$predicted_tss,
                 tf_n, min.score)
 
     result <- dplyr::left_join(gene_fliter_tss$tss_df, a, by = "mir_name")

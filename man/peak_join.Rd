@@ -13,6 +13,10 @@ fucntion {peak_merge}}
 \item{peak2}{Pol II peaks. Merged peak data as \code{GRange} object by
 fucntion {peak_merge}}
 }
+\value{
+A GRanges object. The joined peaks for the following analysis to
+  search for TSSs.
+}
 \description{
 Integrate peaks from H3K4me3 and Pol II data. To conduct the overlappd ranges
 for the further analysis by imposing H3K4me3 peaks on Pol II peaks, if both

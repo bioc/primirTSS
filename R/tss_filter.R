@@ -1,13 +1,18 @@
-tss_single_judge <- function(stem_loop_p1, stem_loop_p2, chrom, strand, tss_p1, tss_p2, gene_loci) {
+tss_single_judge <- function(stem_loop_p1, stem_loop_p2, chrom, strand, tss_p1,
+                             tss_p2, gene_loci) {
 
   gene_df <- gene_loci[gene_loci$chrom == chrom & gene_loci$strand == strand, ]
 
-  intra_index <- stem_loop_p1 >= gene_df$gene_p1 & stem_loop_p2 <= gene_df$gene_p2
+  intra_index <- stem_loop_p1 >= gene_df$gene_p1 & stem_loop_p2 <=
+    gene_df$gene_p2
   if (any(intra_index)) {
     gene_intra <- gene_df[intra_index, ]
-    closest_tss <- lapply(gene_intra$gene_start, function(x) {min(abs(x - tss_p1), abs(x - tss_p2))}) %>%
+    closest_tss <- lapply(gene_intra$gene_start, function(x) {
+      min(abs(x - tss_p1), abs(x - tss_p2))
+      }) %>%
       unlist()
-    in_tss <- (gene_intra$gene_start - tss_p1) * (gene_intra$gene_start - tss_p2) < 0
+    in_tss <- (gene_intra$gene_start - tss_p1) *
+      (gene_intra$gene_start - tss_p2) < 0
     colsest_index <- closest_tss <= 150 | in_tss
     if (any(colsest_index)) {
       result <- paste("intra__host_TSS",
@@ -18,7 +23,8 @@ tss_single_judge <- function(stem_loop_p1, stem_loop_p2, chrom, strand, tss_p1, 
         paste0(collapse = ":")
     } else {
       tss_site <- ifelse(strand == "+", tss_p2, tss_p1)
-      both_site_index <- (tss_site - gene_intra$gene_p1) * (tss_site - gene_intra$gene_p2) < 0
+      both_site_index <- (tss_site - gene_intra$gene_p1) *
+        (tss_site - gene_intra$gene_p2) < 0
       if (any(both_site_index)) {
         gene_intra_2 <- gene_intra[both_site_index, ]
         distance <- abs(tss_site - gene_intra_2$gene_start)
@@ -32,7 +38,9 @@ tss_single_judge <- function(stem_loop_p1, stem_loop_p2, chrom, strand, tss_p1, 
       }
     }
   } else {
-    closest_tss <- lapply(gene_df$gene_start, function(x) {min(abs(x - tss_p1), abs(x - tss_p2))}) %>%
+    closest_tss <- lapply(gene_df$gene_start, function(x) {
+      min(abs(x - tss_p1), abs(x - tss_p2))
+      }) %>%
       unlist()
     in_tss <- (gene_df$gene_start - tss_p1) * (gene_df$gene_start - tss_p2) < 0
     colsest_index <- closest_tss <= 150 | in_tss
@@ -42,12 +50,14 @@ tss_single_judge <- function(stem_loop_p1, stem_loop_p2, chrom, strand, tss_p1, 
     } else {
       tss_site <- ifelse(strand == "+", tss_p2, tss_p1)
       mir_end <- ifelse(strand == "+", stem_loop_p2, stem_loop_p1)
-      gene_tss_trans_index <- (tss_site - gene_df$gene_start) * (mir_end - gene_df$gene_start) < 0
+      gene_tss_trans_index <- (tss_site - gene_df$gene_start) *
+        (mir_end - gene_df$gene_start) < 0
 
       if (any(gene_tss_trans_index)) {
         result <- "abandon03"
       } else {
-        gene_end <- ifelse(gene_df$strand == "+", gene_df$gene_p2, gene_df$gene_p1)
+        gene_end <- ifelse(gene_df$strand == "+", gene_df$gene_p2,
+                           gene_df$gene_p1)
         gene_end_trans_index <- (tss_site - gene_end) * (mir_end - gene_end) < 0
         if (any(gene_end_trans_index)) {
           select_gene <- gene_df[gene_end_trans_index, ]
@@ -105,7 +115,8 @@ tss_filter <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
     mutate(predicted_tss = as.double(predicted_tss))
 
   s_tss_success <- s_tss %>%
-    filter(tss_type %in% c("host_TSS", "intra_TSS", "overlap_inter_TSS", "inter_TSS"))
+    filter(tss_type %in%
+             c("host_TSS", "intra_TSS", "overlap_inter_TSS", "inter_TSS"))
   a1 <- s_tss_success$stem_loop_p1 - s_tss_success$predicted_tss
   a2 <- s_tss_success$predicted_tss - s_tss_success$stem_loop_p2
   pri_tss_distance <- ifelse(s_tss_success$strand == "+", a1, a2)

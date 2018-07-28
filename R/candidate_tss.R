@@ -134,7 +134,8 @@ check_DHS_df <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
     }
   }
 
-  DHS_fail_mir <- lapply(split(new_mir_tss_df2, new_mir_tss_df2$mir_name), f2) %>% unlist()
+  DHS_fail_mir <- lapply(split(new_mir_tss_df2, new_mir_tss_df2$mir_name),
+                         f2) %>% unlist()
 
   list(success = new_mir_tss_df1, fail_DHS = DHS_fail_mir)
 }
@@ -218,7 +219,8 @@ find_candidate_tss_plot <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
 
     if (is.null(dhs_check$fail_DHS)) {
       a <- phast_score_plot(dhs_check$success$mir_name, dhs_check$success$chrom,
-                            dhs_check$success$stem_loop_p1, dhs_check$success$stem_loop_p2,
+                            dhs_check$success$stem_loop_p1,
+                            dhs_check$success$stem_loop_p2,
                             dhs_check$success$strand,
                             dhs_check$success$tss_p1, dhs_check$success$tss_p2,
                             dhs_check$success$eponine_score)

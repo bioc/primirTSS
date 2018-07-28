@@ -134,40 +134,32 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
 #'   \code{expressed_mir} is not specified, the default value of the parameter
 #'   is "\code{all}" and the function will acquiescently employ all the miRNAs
 #'   currently listed on "\code{miRbase}" database.
-#'
 #' @param bed_merged Peaks from ChIP-seq data to be provided for analysis can be
 #'   H3K4me3 peaks, Pol II peaks or both. Notice that peaks are supposed to be
 #'   merged(see also \code{\link{peak_merge}}) before \code{find_TSS} if using
 #'   only one kind of peak data, while peaks shoud be firstly merged and then
 #'   join together(see also \code{\link{peak_join}}) if both H3K4me3 data and
 #'   Pol II are input.
-#'
 #' @param flanking_num A parameter in Eponine model to detect TSSs. It is
 #'   concluded that a peak signal with flanking regions of C-G enrichment are
 #'   important to mark TSSs. The default value is 1000.
-#'
 #' @param threshold Threshold for candidate TSSs scored with Eponine method. The
 #'   default value is 0.7.
-#'
 #' @param ignore_DHS_check The process of DHS_check further assist to filter
 #'   putative TSSs. When there are a DHS peak that locates within 1 kb upstream
 #'   of a putative TSS, this predicted TSS will be retain for it character is
 #'   consistent with that of an authentic TSS. Or the TSSs with no DHSs locating
 #'   within 1 kb upstream of them would be discard.
-#'
 #' @param DHS ChIP-seq data of DNase I hypersensitive sites(DHSs).
-#'
 #' @param allmirdhs_byforce When we use DHS data to check the validity of TSSs,
 #'   there is possibility where no DHSs locates within 1 kb upstream of all
 #'   putative TSSs and all these putative TSSs might be filtered out by our
 #'   method resulting no outputs. While "\code{allmirdhs_byforce} = TRUE", it
 #'   ensures to output at least 1 most possible TSS even if the nearest DHS
 #'   signal locates more than 1 kb upsteam of this TSS.
-#'
 #' @param expressed_gene Users can speicify genes expressed in certain
 #'   cell-lines that is analyzed. Or the default value is "\code{all}", which
 #'   means all the expressed genes annotated on Ensemble will be employed.
-#'
 #' @param allmirgene_byforce While integrating expressed_gene data to improve
 #'   prediction, there might be a circumstance where all the putative TSS are
 #'   discarded. To prevent this condition, user are allowed to use
@@ -193,6 +185,7 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
 #'
 #'
 #' @examples
+#' \dontrun{
 #' expressed_mir <- "hsa-mir-5697"
 #' bed_merged <- data.frame(
 #'   chrom = c("chr1", "chr1", "chr1", "chr1", "chr2"),
@@ -202,6 +195,7 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
 #' )
 #' bed_merged <- as(bed_merged, "GRanges")
 #' plot_primiRNA(expressed_mir, bed_merged)
+#' }
 #'
 #' @importFrom Gviz IdeogramTrack
 #' @importFrom Gviz GenomeAxisTrack

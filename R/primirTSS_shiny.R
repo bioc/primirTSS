@@ -5,7 +5,9 @@
 #' conveniently predict putative TSSs of miRNA.
 #'
 #' Users can refer documents of the two functions mentioned ABOVE for details.
-
+#'
+#' @return A graphical interfaces.
+#'
 #' @examples
 #' run_primirTSSapp()
 #'

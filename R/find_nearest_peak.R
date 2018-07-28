@@ -57,7 +57,9 @@ find_nearest_peak <- function(peak, expressed_mir = "all") {
     index <- as.double(index)
 
     tmp_df <- bind_cols(tmp_mir, tmp_peak[index, ])
-    index1 <- ((tmp_df$mir_start - tmp_df$start1) * (tmp_df$mir_start - tmp_df$end1)) <= 0
+    index1 <-
+      ((tmp_df$mir_start - tmp_df$start1) * (tmp_df$mir_start - tmp_df$end1)) <=
+      0
     tmp_df[(index1 & tmp_df$strand == "+"), ]$end1 <-
       tmp_df[(index1 & tmp_df$strand == "+"), ]$mir_start - 1
     tmp_df[(index1 & tmp_df$strand == "-"), ]$start1 <-

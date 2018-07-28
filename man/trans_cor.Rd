@@ -17,6 +17,9 @@ to be coverted.}
 "hg19" or "hg38", etc. NOTICE \code{hg_from} and \code{hg_to} should be
 different from each other.}
 }
+\value{
+A GRanges object.
+}
 \description{
 Convert coordinates between different genomes when necessary.
 }

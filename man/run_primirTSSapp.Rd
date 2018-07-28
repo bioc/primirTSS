@@ -6,6 +6,9 @@
 \usage{
 run_primirTSSapp()
 }
+\value{
+A graphical interfaces.
+}
 \description{
 A graphical web interface is provided for users to achieve the functions of
 \code{\link{find_tss}} and \code{\link{plot_primiRNA}} to intuitively and

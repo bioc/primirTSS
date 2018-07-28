@@ -23,9 +23,11 @@ cor_tdga <- function(chrom, start, end, strand) {
 
 
 require_fa <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
-                       strand, peak_p1, peak_p2, histone_p1_flank, histone_p2_flank) {
+                       strand, peak_p1, peak_p2, histone_p1_flank,
+                       histone_p2_flank) {
 
-  mir_flank <- data_frame(mir_name = mir_name, chrom = chrom, stem_loop_p1 = stem_loop_p1,
+  mir_flank <- data_frame(mir_name = mir_name, chrom = chrom,
+                          stem_loop_p1 = stem_loop_p1,
                           stem_loop_p2 = stem_loop_p2, strand = strand,
                           peak_p1 = peak_p1, peak_p2 = peak_p2,
                           histone_p1_flank = histone_p1_flank,
@@ -48,9 +50,11 @@ require_fa <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
 
 
 eponine_score <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
-                          strand, peak_p1, peak_p2, flanking_num = 1000, threshold = 0.7) {
+                          strand, peak_p1, peak_p2, flanking_num = 1000,
+                          threshold = 0.7) {
 
-  mir_peaks <- data_frame(mir_name = mir_name, chrom = chrom, stem_loop_p1 = stem_loop_p1,
+  mir_peaks <- data_frame(mir_name = mir_name, chrom = chrom,
+                          stem_loop_p1 = stem_loop_p1,
                           stem_loop_p2 = stem_loop_p2, strand = strand,
                           peak_p1 = peak_p1, peak_p2 = peak_p2)
 
@@ -66,7 +70,10 @@ eponine_score <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
   writeLines(a, tmp_path)
 
   java_path <- system.file("extdata", "eponine-scan.jar", package = "primirTSS")
-  cmd <- sprintf("java -jar %s -seq %s -threshold %s", java_path, tmp_path, threshold)
+  cmd <- sprintf("java -jar %s -seq %s -threshold %s",
+                 java_path,
+                 tmp_path,
+                 threshold)
   aa <- system(cmd, intern = TRUE)
 
   file.remove(tmp_path)
@@ -79,7 +86,8 @@ eponine_score <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
                        tss_p2 = a_tmp[, 5],
                        eponine_score = a_tmp[, 6]) %>%
     separate(previous,
-             into = c("mir_name", "chrom", "stem_loop_p1", "stem_loop_p2", "strand",
+             into = c("mir_name", "chrom", "stem_loop_p1", "stem_loop_p2",
+                      "strand",
                       "peak_p1", "peak_p2",
                       "histone_p1_flank", "histone_p2_flank"),
              sep = "_") %>%

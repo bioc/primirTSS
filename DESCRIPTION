@@ -1,6 +1,6 @@
 Package: primirTSS
 Title: Prediction of pri-miRNA Transcription Start Site 
-Version: 0.99.1
+Version: 0.99.2
 Author: Pumin Li [aut, cre], Qi Xu [aut]
 Maintainer: Pumin Li <ipumin@163.com>
 Description: A fast, convenient tool for predicting of pri-miRNA Transcription Start Site.
@@ -28,7 +28,9 @@ Imports:
     TFBSTools (>= 1.18.0),
     JASPAR2018 (>= 1.1.1),
     tibble (>= 1.4.2),
-    R.utils (>= 2.6.0)
+    R.utils (>= 2.6.0),
+    stats,
+    utils
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
