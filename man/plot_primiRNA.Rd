@@ -81,7 +81,6 @@ NOTICE that this function is used for visualizing the predicted result of
 ONLY ONE spicific miRNA every single time.
 }
 \examples{
-\dontrun{
 expressed_mir <- "hsa-mir-5697"
 bed_merged <- data.frame(
   chrom = c("chr1", "chr1", "chr1", "chr1", "chr2"),
@@ -90,7 +89,7 @@ bed_merged <- data.frame(
   stringsAsFactors = FALSE
 )
 bed_merged <- as(bed_merged, "GRanges")
-plot_primiRNA(expressed_mir, bed_merged)
-}
+# plot_primiRNA(expressed_mir, bed_merged)
+
 
 }

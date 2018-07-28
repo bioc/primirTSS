@@ -30,7 +30,7 @@ By integrating H3k4me4 and Pol II data, parting of false positive counts after s
 **H3K4me3** and **Pol II** data are key points for accurate prediction our method. 
 If one of these to peak data is input, before execute the main function `find_TSS`, the function `peak_merge` should be used to merge adjacent peaks whose distance between each other is less than `n` base pairs and return the merged peaks as an output.
 
-```{r, eval = FALSE}
+```{r}
 library(primirTSS)
 peak_df <- data.frame(chrom = c("chr1", "chr2", "chr1"),
                        chromStart = c(450, 460, 680),
@@ -46,7 +46,7 @@ peak_merge(peak, n =250)
  
 If both of H3K4me3 and Pol II data, after separately merging these two kinds of data first, `peak_join` should be employed to integrate H3K4me3 and Pol II peaks and return the result as `bed_merged` parameter for the main function `find_tss`.
 
-```{r, eval = FALSE}
+```{r}
 peak_df1 <- data.frame(chrom = c("chr1", "chr1", "chr1", "chr2"),
                        start = c(100, 460, 600, 70),
                        end = c(200, 500, 630, 100),
@@ -68,15 +68,6 @@ peak_join(peak1, peak2)
 * `find_tss` is the main function in the package. The program will first score the candidate TSSs of miRNA and pick up the best candidate in the first step of prediction, (where users can set `flanking_num` and `threshold`). 
 * After the first step, H3K4me3 and Pol II data, miRNA expression profiles and DHS check, protein-coding genes expression profiles, if provided, will be integrated to decrease the rate of false positive.
 
-```{R, eval = FALSE}
-find_tss <- find_tss(bed_merged, expressed_mir = "all",
-                     flanking_num = 1000, threshold = 0.7,
-                     ignore_DHS_check = TRUE,
-                     DHS, allmirdhs_byforce = TRUE,
-                     expressed_gene = "all", allmirgene_byforce = TRUE,
-                     seek_tf = FALSE, tf_n = 1000, min.score = "0.8") 
-```
-
 </br>
 </br>
 
@@ -89,21 +80,19 @@ There will be different circumstances where not all miRNA expression profiles, D
 * `ignore_DHS_check`: If users do not have their own miRNA expression profile, the function will employ all the miRNAs already annotated in human, but we suggest using DHS data of the cell line from **ENCODE** to check whether this miRNA is expressed in the cell line or not as well as and all human gene expression profiles from **Ensemble** to check the relative position of TSSs and protein-coding genes to improve the accuracy of prediction.
 
 
-```{R, eval = FALSE}
-library(primirTSS)
+```{r}
 peakfile <- system.file("testdata", "HMEC_h3.csv", package = "primirTSS")
 DHSfile <- system.file("testdata", "HMEC_DHS.csv", package = "primirTSS")
-
 peak_h3 <- read.csv(peakfile, stringsAsFactors = FALSE)
 DHS <- read.csv(DHSfile, stringsAsFactors = FALSE)
- 
+peak_h3 <-  as(peak_h3, "GRanges")
 peak <- peak_merge(peak_h3)
 
-no_ownmiRNA <- find_tss(peak, ignore_DHS_check = FALSE,
-                        DHS = DHS, allmirdhs_byforce = FALSE,
-                        expressed_gene = "all",
-                        allmirgene_byforce = FALSE,
-                        seek_tf = FALSE)
+# no_ownmiRNA <- find_tss(peak, ignore_DHS_check = FALSE,
+#                         DHS = DHS, allmirdhs_byforce = FALSE,
+#                         expressed_gene = "all",
+#                         allmirgene_byforce = FALSE,
+#                         seek_tf = FALSE)
 ```
 
 </br>
@@ -112,10 +101,17 @@ no_ownmiRNA <- find_tss(peak, ignore_DHS_check = FALSE,
 
 * `expressed_mir`: If users have their own miRNA expression profiles, we will use the expressed miRNAs and we suggest not using DHS data of the cell line or others to check the expression of miRNAs.But the protein-coding gene check to check the relative position of TSSs and protein-coding genes is necessary, which helps to verify the precision of prediction.
 
-```{R, eval = FALSE}
-expressed_mir <- c("hsa-mir-5697", "hsa-mir-4695", "hsa-mir-1265", "hsa-mir- 192")
+```{r}
+bed_merged <- data.frame(
+                chrom = c("chr1", "chr1", "chr1", "chr1", "chr2"),
+                start = c(9910686, 9942202, 9996940, 10032962, 9830615),
+                end = c(9911113, 9944469, 9998065, 10035458, 9917994),
+                stringsAsFactors = FALSE)
+bed_merged <- as(bed_merged, "GRanges")
 
-ownmiRNA <- find_tss(peak, expressed_mir = expressed_mir,
+expressed_mir <- c("hsa-mir-5697")
+
+ownmiRNA <- find_tss(bed_merged, expressed_mir = expressed_mir,
                      ignore_DHS_check = TRUE,
                      expressed_gene = "all",
                      allmirgene_byforce = TRUE,
@@ -126,49 +122,10 @@ ownmiRNA <- find_tss(peak, expressed_mir = expressed_mir,
 
 * `expressed_gene`: Additionally, users can also specify certain genes expressed in the cell-line being analyzed:
 
-```{R, eval = FALSE}
-expressed_mir <- c("hsa-mir-5697", "hsa-mir-4695", "hsa-mir-1265", "hsa-mir- 192")
-ownmiRNA <- find_tss(peak, expressed_mir = expressed_mir,
-                     ignore_DHS_check = TRUE,
-                     expressed_gene = c("ENSG00000261657", "ENSG00000229483"
-                                        , "ENSG00000252952"),
-                     allmirgene_byforce = TRUE,
-                     seek_tf = FALSE)
-```
-
 
 
 ### Step 3: Searching for TFs
 * `seek_tf = TRUE`: If user want to predict transcriptional regulation relationship between TF and miRNA, like which TFs might regulate miRNA after get TSSs, they can change `seek_tf = FALSE` from `seek_tf = TRUE` directly in the comprehensive function `find_TSS()`. 
-
-```{R, eval = FALSE}
-expressed_mir <- c("hsa-mir-5697", "hsa-mir-4695", 
-                   "hsa-mir-1265", "hsa-mir- 192")
-ownmiRNA <- find_tss(peak, expressed_mir = expressed_mir,
-                     ignore_DHS_check = TRUE,
-                     expressed_gene = c("ENSG00000261657", "ENSG00000229483",
-                                        "ENSG00000252952"),
-                     allmirgene_byforce = TRUE,
-                     seek_tf = TRUE)
-```
-
-</br>
-
-Or
-
-</br>
-
-* `mir_tf()`: Apart from setting this parameter directly in `find_TSS()`, user can also use an independent function `mir_tf()` in the package later after getting the prediction of TSSs.
-
-
-```{R, eval= FALSE}
-tss_df <- data.frame(mir_name = c("hsa-mir-5697", "hsa-mir-192"), 
-                     chrom = c("chr1", "chr11"),strand = c("+","-"),
-                     predicted_tss = c(10003486, 64683600), 
-                     stringsAsFactors = FALSE)
-tf <- mir_tf(tss_df, tf_n = 1000)
-```
-
 
 
 ### Step4: Analysis of results 
@@ -176,25 +133,15 @@ tf <- mir_tf(tss_df, tf_n = 1000)
 
 Here is a demo of predicting TSS for hsa-mir-5697, ignore DHS check.
 
-```{R}
-library(primirTSS)
-bed_merged <- data.frame(
-                chrom = c("chr1", "chr1", "chr1", "chr1", "chr2"),
-                start = c(9910686, 9942202, 9996940, 10032962, 9830615),
-                end = c(9911113, 9944469, 9998065, 10035458, 9917994),
-                stringsAsFactors = FALSE)
-bed_merged <- as(bed_merged, "GRanges")
 
-ownmiRNA <- find_tss(bed_merged, expressed_mir = "hsa-mir-5697",
-                     ignore_DHS_check = TRUE,
-                     expressed_gene = "all",
-                     allmirgene_byforce = TRUE)
-ownmiRNA
-```
 
 </br>
 
-**PART1**, `$tss_df`: 
+**PART1**, `$tss_df`:
+
+```{r}
+ownmiRNA$tss_df
+```
 
 The first part of the result returns details of predicted TSSs, composed of seven columns: *mir\_name, chrom, stem\_loop\_p1, stem\_loop\_p2, strand mir\_context, tss\_type gene* and *predicted_tss*:
 
@@ -271,13 +218,13 @@ Eponine method meet the threshold we set,
 * `plot_primiRNA()`: Apart from returning the putative TSS of each miRNA, the package `primirTSS` can also visualize the result and return an image composed of six tracks, (1)TSS, (2)genome, (3)pri-miRNA, (4)the closest gene, (5)eponine score and (6)conservation score.
 And the parameters in this function is almost the same as those in `find_tss()` except `expressed_mir` only represents one certain miRNA in `plot_primiRNA()`. **NOTICE** that this function is used for visualizing the TSS prediction of **only one** specific miRNA every single time. 
 
-```{R, eval = FALSE}
-Visualization <- plot_primiRNA(expressed_mir, bed_merged,
-                               flanking_num = 1000, threshold = 0.7,
-                               ignore_DHS_check = TRUE,
-                               DHS, allmirdhs_byforce = TRUE,
-                               expressed_gene = "all",
-                               allmirgene_byforce = TRUE)
+```{r}
+# plot_primiRNA(expressed_mir, bed_merged,
+#               flanking_num = 1000, threshold = 0.7,
+#               ignore_DHS_check = TRUE,
+#               DHS, allmirdhs_byforce = TRUE,
+#               expressed_gene = "all",
+#               allmirgene_byforce = TRUE)
 ```
 
 </br>
