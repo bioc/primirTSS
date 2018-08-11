@@ -15,10 +15,25 @@ knitr::opts_chunk$set(
 ```
 
 ## 1 Introduction
-Identifying human miRNA transcriptional start sites (TSSs) plays a significant role in understanding the transcriptional regulation of miRNA. However, due to the quick capping of pri-miRNA and many miRNA genes may lie in the introns or even exons of other genes, it is difficult to detect miRNA TSSs. miRNA TSSs are cell-specific. And miRNA TSSs are cell-specific, which implies the same miRNA in different cell-lines may start transcribing at different TSSs.
+Identifying human miRNA transcriptional start sites (TSSs) plays a significant 
+role in understanding the transcriptional regulation of miRNA. However, due to 
+the quick capping of pri-miRNA and many miRNA genes may lie in the introns or 
+even exons of other genes, it is difficult to detect miRNA TSSs. miRNA TSSs are 
+cell-specific. And miRNA TSSs are cell-specific, which implies the same miRNA in 
+different cell-lines may start transcribing at different TSSs.
 
-High throughput sequencing, like ChIP-seq, has gradually become an essential and versatile approach for us to identify and understand genomes and their transcriptional processes. 
-By integrating H3k4me4 and Pol II data, parting of false positive counts after scoring can be filter out. Besides, DNase I hypersensitive sites(DHS) also imply TSSs, where miRNAs will be accessible and functionally related to transcription activities. And additionally, the expression profile of miRNA and genes in certain cell-line will be considered as well for improve fidelity. By employing all these different kinds of data, here we have developed the primirTSS package to assist users to identify miRNA TSSs in human and to provide them with related information about where miRNA genes lie in the genome, with both command-line and graphical interfaces.
+High throughput sequencing, like ChIP-seq, has gradually become an essential and 
+versatile approach for us to identify and understand genomes and their 
+transcriptional processes. 
+By integrating H3k4me4 and Pol II data, parting of false positive counts 
+after scoring can be filter out. Besides, DNase I hypersensitive sites(DHS) also
+imply TSSs, where miRNAs will be accessible and functionally related to 
+transcription activities. And additionally, the expression profile of miRNA and 
+genes in certain cell-line will be considered as well for improve fidelity. By 
+employing all these different kinds of data, here we have developed the primirTSS 
+package to assist users to identify miRNA TSSs in human and to provide them with 
+related information about where miRNA genes lie in the genome, with both 
+command-line and graphical interfaces.
 
 
 ## 2 Find the best putative TSS
@@ -27,14 +42,18 @@ By integrating H3k4me4 and Pol II data, parting of false positive counts after s
 
 #### 1 primirTSS
 
-Install the latest release of R, then get `primirTSS` by starting R and entering the commands:
+Install the latest release of R, then get `primirTSS` by starting R and entering 
+the commands:
 
 ```{r, eval = FALSE}
 devtools::install_github("ipumin/primirTSS")
 ```
 
 #### 2 Install Java SE Development Kit(JDK)
-As Java development environment is indispensable for the main function in our package, it is <span style="border-bottom:1px dashed black;">necessary</span> for users to install [Java SE Development Kit 10](http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html) before using `primirTSS`. 
+As Java development environment is indispensable for the main function in our 
+package, it is <span style="border-bottom:1px dashed black;">necessary</span> 
+for users to install [Java SE Development Kit 10](http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html) 
+before using `primirTSS`. 
 
 ## 3 Getting Started
 
@@ -43,7 +62,10 @@ As Java development environment is indispensable for the main function in our pa
 * `peak_merge()`: **Merge one kind of peaks** (H3K4me3 **or** Pol II)
 
 **H3K4me3** and **Pol II** data are key points for accurate prediction our method. 
-If one of these to peak data is input, before execute the main function `find_TSS`, the function `peak_merge` should be used to merge adjacent peaks whose distance between each other is less than `n` base pairs and return the merged peaks as an output.
+If one of these to peak data is input, before execute the main function `find_TSS`, 
+the function `peak_merge` should be used to merge adjacent peaks whose distance 
+between each other is less than `n` base pairs and return the merged peaks as an 
+output.
 
 ```{r}
 library(primirTSS)
@@ -59,7 +81,9 @@ peak_merge(peak, n =250)
 
 * `peak_join()`: **Join two kinds of peaks** (H3K4me3 **and** Pol II)
  
-If both of H3K4me3 and Pol II data, after separately merging these two kinds of data first, `peak_join` should be employed to integrate H3K4me3 and Pol II peaks and return the result as `bed_merged` parameter for the main function `find_tss`.
+If both of H3K4me3 and Pol II data, after separately merging these two kinds of
+data first, `peak_join` should be employed to integrate H3K4me3 and Pol II peaks
+and return the result as `bed_merged` parameter for the main function `find_tss`.
 
 ```{r}
 peak_df1 <- data.frame(chrom = c("chr1", "chr1", "chr1", "chr2"),
@@ -80,19 +104,30 @@ peak_join(peak1, peak2)
 ### Step 2: Predict most possible TSS for miRNA
 
 
-* `find_tss` is the main function in the package. The program will first score the candidate TSSs of miRNA and pick up the best candidate in the first step of prediction, (where users can set `flanking_num` and `threshold`). 
-* After the first step, H3K4me3 and Pol II data, miRNA expression profiles and DHS check, protein-coding genes expression profiles, if provided, will be integrated to decrease the rate of false positive.
+* `find_tss` is the main function in the package. The program will first score 
+the candidate TSSs of miRNA and pick up the best candidate in the first step of 
+prediction, (where users can set `flanking_num` and `threshold`). 
+* After the first step, H3K4me3 and Pol II data, miRNA expression profiles and
+DHS check, protein-coding genes expression profiles, if provided, will be 
+integrated to decrease the rate of false positive.
 
 </br>
 </br>
 
-There will be different circumstances where not all miRNA expression profiles, DHS data, protein-coding gene('gene') expression profiles are available:
+There will be different circumstances where not all miRNA expression profiles, 
+DHS data, protein-coding gene('gene') expression profiles are available:
 
 </br>
 
-**Circumstance 1:** no miRNA expression data; then suggest DHS check and protein-coding gene check.
+**Circumstance 1:** no miRNA expression data; then suggest DHS check and 
+protein-coding gene check.
 
-* `ignore_DHS_check`: If users do not have their own miRNA expression profile, the function will employ all the miRNAs already annotated in human, but we suggest using DHS data of the cell line from **ENCODE** to check whether this miRNA is expressed in the cell line or not as well as and all human gene expression profiles from **Ensemble** to check the relative position of TSSs and protein-coding genes to improve the accuracy of prediction.
+* `ignore_DHS_check`: If users do not have their own miRNA expression profile, 
+the function will employ all the miRNAs already annotated in human, but we 
+suggest using DHS data of the cell line from **ENCODE** to check whether this
+miRNA is expressed in the cell line or not as well as and all human gene expression 
+profiles from **Ensemble** to check the relative position of TSSs and 
+protein-coding genes to improve the accuracy of prediction.
 
 
 ```{r}
@@ -113,9 +148,14 @@ no_ownmiRNA <- find_tss(peak, ignore_DHS_check = FALSE,
 
 </br>
 
-**Circumstance 2**: miRNA expression data provided; then no need for DHS check but protein-coding gene check.
+**Circumstance 2**: miRNA expression data provided; then no need for DHS check 
+but protein-coding gene check.
 
-* `expressed_mir`: If users have their own miRNA expression profiles, we will use the expressed miRNAs and we suggest not using DHS data of the cell line or others to check the expression of miRNAs.But the protein-coding gene check to check the relative position of TSSs and protein-coding genes is necessary, which helps to verify the precision of prediction.
+* `expressed_mir`: If users have their own miRNA expression profiles, we will use 
+the expressed miRNAs and we suggest not using DHS data of the cell line or others 
+to check the expression of miRNAs.But the protein-coding gene check to check the 
+relative position of TSSs and protein-coding genes is necessary, which helps to
+verify the precision of prediction.
 
 ```{r}
 bed_merged <- data.frame(
@@ -136,12 +176,16 @@ ownmiRNA <- find_tss(bed_merged, expressed_mir = expressed_mir,
 
 </br>
 
-* `expressed_gene`: Additionally, users can also specify certain genes expressed in the cell-line being analyzed:
+* `expressed_gene`: Additionally, users can also specify certain genes expressed
+in the cell-line being analyzed:
 
 
 
 ### Step 3: Searching for TFs
-* `seek_tf = TRUE`: If user want to predict transcriptional regulation relationship between TF and miRNA, like which TFs might regulate miRNA after get TSSs, they can change `seek_tf = FALSE` from `seek_tf = TRUE` directly in the comprehensive function `find_TSS()`. 
+* `seek_tf = TRUE`: If user want to predict transcriptional regulation 
+relationship between TF and miRNA, like which TFs might regulate miRNA after get 
+TSSs, they can change `seek_tf = FALSE` from `seek_tf = TRUE` directly in the 
+comprehensive function `find_TSS()`. 
 
 
 ### Step4: Analysis of results 
@@ -159,7 +203,10 @@ Here is a demo of predicting TSS for hsa-mir-5697, ignore DHS check.
 ownmiRNA$tss_df
 ```
 
-The first part of the result returns details of predicted TSSs, composed of seven columns: *mir\_name, chrom, stem\_loop\_p1, stem\_loop\_p2, strand mir\_context, tss\_type gene* and *predicted_tss*:
+The first part of the result returns details of predicted TSSs, composed of 
+seven columns: 
+*mir\_name, chrom, stem\_loop\_p1, stem\_loop\_p2, strand mir\_context, tss\_type gene* 
+and *predicted_tss*:
 
  Entry|Implication
  :----:|----
@@ -185,7 +232,8 @@ TSSs are cataloged into 4 types as below:
  * **intra_TSS:** The TSSs of miRNA that are NOT close to the TSS of protein-coding gene,
   on the condition where `mir_context = intra`.
 
- * **overlap\_inter_TSS:** The TSSs of miRNA are cataloged as `overlap_inter_TSS` when the pri-miRNA gene overlaps with Ensembl gene, on the condition where "`mir_context = inter`".
+ * **overlap\_inter_TSS:** The TSSs of miRNA are cataloged as `overlap_inter_TSS` 
+ when the pri-miRNA gene overlaps with Ensembl gene, on the condition where "`mir_context = inter`".
   
  * **inter\_inter_TSS:** The TSSs of miRNA are cataloged as `inter_inter_TSS`
   when the miRNA gene does NOT overlap with Ensembl gene,
@@ -231,8 +279,14 @@ Eponine method meet the threshold we set,
 
 ## 4 Plot the prediction of TSS for miRNA
 
-* `plot_primiRNA()`: Apart from returning the putative TSS of each miRNA, the package `primirTSS` can also visualize the result and return an image composed of six tracks, (1)TSS, (2)genome, (3)pri-miRNA, (4)the closest gene, (5)eponine score and (6)conservation score.
-And the parameters in this function is almost the same as those in `find_tss()` except `expressed_mir` only represents one certain miRNA in `plot_primiRNA()`. **NOTICE** that this function is used for visualizing the TSS prediction of **only one** specific miRNA every single time. 
+* `plot_primiRNA()`: Apart from returning the putative TSS of each miRNA, the 
+package `primirTSS` can also visualize the result and return an image composed 
+of six tracks, (1)TSS, (2)genome, (3)pri-miRNA, (4)the closest gene, (5)eponine score and
+(6)conservation score.
+And the parameters in this function is almost the same as those in `find_tss()` 
+except `expressed_mir` only represents one certain miRNA in `plot_primiRNA()`. 
+**NOTICE** that this function is used for visualizing the TSS prediction of 
+**only one** specific miRNA every single time. 
 
 ```
 plot_primiRNA(expressed_mir, bed_merged,
@@ -249,7 +303,9 @@ plot_primiRNA(expressed_mir, bed_merged,
 　
 　Figure S1. _**Visualized result for miRNA TSSs by `Plot pri-miRNA TSS()`**_
 
->As Figure S1 shows, the picture contains information of the pri-miRNA’s coordinate, the closest gene to the miRNA, the eponine score of the miRNA’s candidate TSS and the conservation score of the miRNA’s candidate TSS.
+>As Figure S1 shows, the picture contains information of the pri-miRNA’s 
+coordinate, the closest gene to the miRNA, the eponine score of the miRNA’s 
+candidate TSS and the conservation score of the miRNA’s candidate TSS.
 >There are six tracks plotted in return:
 >
 >
@@ -268,7 +324,12 @@ plot_primiRNA(expressed_mir, bed_merged,
 ## 5 Graphical web interface for prediction
 
 
-* `run_primirTSSapp()`: A graphical web interface is designed to achieve the functions of `find_tss` and `plot_primiRNA` to help users intuitively and conveniently predict putative TSSs of miRNA. Users can refer documents of the two functions, **Find the best putative TSS** and **Plot the prediction of TSSs for miRNA**, mentioned above for details.
+* `run_primirTSSapp()`: A graphical web interface is designed to achieve the 
+functions of `find_tss` and `plot_primiRNA` to help users intuitively and 
+conveniently predict putative TSSs of miRNA. Users can refer documents of the 
+two functions, 
+**Find the best putative TSS** and **Plot the prediction of TSSs for miRNA**, 
+mentioned above for details.
 </br>
 
 
@@ -278,9 +339,24 @@ plot_primiRNA(expressed_mir, bed_merged,
 　Figure S2. _**Graphical web interface of `Find pri-miRNA TSS()`**_
 
 
->As Figure S2 shows, if we want to use the shiny app, we should select the appropriate options or upload the appropriate files. Histone peaks, Pol II peaks and DHS files are comma-separated values (CSV) files, whose first line is chrom,start,end. Every line of miRNA expression profiles has only one miRNA name which start with hsa-mir, such as hsa-mir-5697. Every line of gene expression profiles has only one gene name which derived from Ensembl, such as ENSG00000261657. All of miRNA expression profiles and gene expression profiles do not have column names. If we have prepared, we can push the Start the analysis button to start finding the TSSs. The process of analysis may need to take a few minutes, and a process bar will appear in right corner.
+>As Figure S2 shows, if we want to use the shiny app, we should select the 
+appropriate options or upload the appropriate files. Histone peaks, Pol II 
+peaks and DHS files are comma-separated values (CSV) files, whose first line 
+is chrom,start,end. Every line of miRNA expression profiles has only one miRNA 
+name which start with hsa-mir, such as hsa-mir-5697. Every line of gene expression 
+profiles has only one gene name which derived from Ensembl, such as ENSG00000261657. 
+All of miRNA expression profiles and gene expression profiles do not have column 
+names. If we have prepared, we can push the Start the analysis button to start 
+finding the TSSs. The process of analysis may need to take a few minutes, and a
+process bar will appear in right corner.
 >
->As a result, we will view first six rows of the result. The first five columns are about <span style="border-bottom:1px dashed black;"> miRNA </span> information, next five columns are about <span style="border-bottom:1px dashed black;"> TSS </span> information. The column of gene denotes the gene whose TSS is closest to the miRNA TSS. The column of pri\_tss\_distance denotes the distance between miRNA TSS and stem-loop. If users choose to get TFs simultaneously, they will have an additional column, `tf`, which stores related TFs.
+>As a result, we will view first six rows of the result. The first five columns 
+are about <span style="border-bottom:1px dashed black;"> miRNA </span> information,
+next five columns are about <span style="border-bottom:1px dashed black;"> 
+TSS </span> information. The column of gene denotes the gene whose TSS is 
+closest to the miRNA TSS. The column of pri\_tss\_distance denotes the distance 
+between miRNA TSS and stem-loop. If users choose to get TFs simultaneously, 
+they will have an additional column, `tf`, which stores related TFs.
 
 </br>
 
@@ -290,7 +366,8 @@ plot_primiRNA(expressed_mir, bed_merged,
 　Figure S3. _**Graphical web interface of `Plot pri-miRNA TSS()`**_
 
 
->As Figure S4 shows, if we select the appropriate options and upload the appropriate files, we can have a picture of miRNA TSSs.
+>As Figure S4 shows, if we select the appropriate options and upload the 
+appropriate files, we can have a picture of miRNA TSSs.
 
 </br>
 

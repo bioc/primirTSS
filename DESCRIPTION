@@ -1,13 +1,13 @@
 Package: primirTSS
 Title: Prediction of pri-miRNA Transcription Start Site 
-Version: 0.99.6
+Version: 0.99.7
 Author: Pumin Li [aut, cre], Qi Xu [aut]
 Maintainer: Pumin Li <ipumin@163.com>
 Description: A fast, convenient tool for predicting of pri-miRNA Transcription Start Site.
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Depends: R (>= 3.5.0)
 Imports:
     GenomicRanges (>= 1.32.2),
@@ -34,5 +34,5 @@ Imports:
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
-biocViews: Sequencing, RNASeq, Genetics, Preprocessing
+biocViews: Sequencing, RNASeq, Genetics, Preprocessing, Transcription, GeneRegulation
 

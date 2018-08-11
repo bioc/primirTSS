@@ -76,7 +76,7 @@ eponine_score <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
 
   file.remove(tmp_path)
 
-  a_tmp <- aa[-(1:3)] %>%
+  a_tmp <- aa[-seq_len(3)] %>%
     str_split("\t", simplify = TRUE)
 
   result <- data_frame(previous = a_tmp[, 1],
@@ -113,3 +113,4 @@ eponine_score <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
 
   list(success = result, fail_eponine = fail)
 }
+
