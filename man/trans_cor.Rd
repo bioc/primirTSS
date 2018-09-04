@@ -13,7 +13,7 @@ to be coverted.}
 \item{hg_from}{The genome are coverting from. This parameter can be "hg18",
 "hg19" or "hg38", etc.}
 
-\item{hg_to}{The genome are coverting to. This parameter can be "hg18",
+\item{hg_to}{Which type the genome is converting to. This parameter can be "hg18",
 "hg19" or "hg38", etc. NOTICE \code{hg_from} and \code{hg_to} should be
 different from each other.}
 }

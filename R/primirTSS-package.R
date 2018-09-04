@@ -34,3 +34,8 @@
 #'   Useful links:
 #'   [Xu HUA et al]\link{https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btw171)}
 #'
+#' @docType package
+#' @name primirTSS
+#'
+NULL
+

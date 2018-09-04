@@ -52,7 +52,7 @@ means all the expressed genes annotated on Ensemble will be employed.}
 
 \item{allmirgene_byforce}{While integrating expressed_gene data to improve
 prediction, there might be a circumstance where all the putative TSS are
-discarded. To prevent this condition, user are allowed to use
+discarded. To prevent this condition, users are allowed to use
 "\code{allmirgene_byforce = TRUE}" to ensure at least 1 putative TSS for
 each miRNA will be output.}
 }
@@ -65,7 +65,7 @@ There will be six tracks plotted as return:
 
 \code{pri-miRNA}: Position of pri-miRNA.
 
-\code{Ensemble genes}: Position of related proterin-coding gene.
+\code{Ensemble genes}: Position of related protein-coding gene.
 
 \code{eponine score}: Score of best putative TSS conducted by eponine method.
 
@@ -79,7 +79,7 @@ using primirTSS.
 }
 \details{
 NOTICE that this function is used for visualizing the predicted result of
-ONLY ONE spicific miRNA every single time.
+ONLY ONE specific miRNA every single time.
 }
 \examples{
 expressed_mir <- "hsa-mir-5697"

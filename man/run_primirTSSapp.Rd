@@ -2,12 +2,12 @@
 % Please edit documentation in R/primirTSS_shiny.R
 \name{run_primirTSSapp}
 \alias{run_primirTSSapp}
-\title{Predict TSSs of miRNA using graphical web interface.}
+\title{Predict TSSs of miRNA using a graphical web interface.}
 \usage{
 run_primirTSSapp()
 }
 \value{
-A graphical interfaces.
+A graphical interface.
 }
 \description{
 A graphical web interface is provided for users to achieve the functions of
