@@ -24,12 +24,12 @@ the previous non-cell-specific methods on miRNA TSSs.
 \section{Author(s)}{
 
 
-  Maintainer: Pumin Li \code{\link{ipumin@163.com}}
+  Maintainer: Pumin Li \email{ipumin@163.com}
 
-  Other contributors: Qi Xu \code{\link{xuqi@vip.qq.com}}
+  Other contributors: Qi Xu \email{xuqi@vip.qq.com}
 }
 
 \seealso{
 Useful links:
-  [Xu HUA et al]\link{https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btw171)}
+  \href{https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btw171}{Xu HUA et al}
 }
