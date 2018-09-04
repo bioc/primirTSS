@@ -1,4 +1,4 @@
-#' Predict TSSs of miRNA using graphical web interface.
+#' Predict TSSs of miRNA using a graphical web interface.
 #'
 #' A graphical web interface is provided for users to achieve the functions of
 #' \code{\link{find_tss}} and \code{\link{plot_primiRNA}} to intuitively and
@@ -6,7 +6,7 @@
 #'
 #' Users can refer documents of the two functions mentioned ABOVE for details.
 #'
-#' @return A graphical interfaces.
+#' @return A graphical interface.
 #'
 #' @examples
 #'

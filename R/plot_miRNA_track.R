@@ -126,7 +126,7 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
 #' using primirTSS.
 #'
 #' NOTICE that this function is used for visualizing the predicted result of
-#' ONLY ONE spicific miRNA every single time.
+#' ONLY ONE specific miRNA every single time.
 #'
 #' @param expressed_mir This parameter allows users to specify certain miRNAs,
 #'   the TSSs of which they want to search for by providing a list of
@@ -162,7 +162,7 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
 #'   means all the expressed genes annotated on Ensemble will be employed.
 #' @param allmirgene_byforce While integrating expressed_gene data to improve
 #'   prediction, there might be a circumstance where all the putative TSS are
-#'   discarded. To prevent this condition, user are allowed to use
+#'   discarded. To prevent this condition, users are allowed to use
 #'   "\code{allmirgene_byforce = TRUE}" to ensure at least 1 putative TSS for
 #'   each miRNA will be output.
 #'
@@ -174,7 +174,7 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
 #'
 #' \code{pri-miRNA}: Position of pri-miRNA.
 #'
-#' \code{Ensemble genes}: Position of related proterin-coding gene.
+#' \code{Ensemble genes}: Position of related protein-coding gene.
 #'
 #' \code{eponine score}: Score of best putative TSS conducted by eponine method.
 #'

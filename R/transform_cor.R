@@ -8,7 +8,7 @@
 #'   to be coverted.
 #' @param hg_from The genome are coverting from. This parameter can be "hg18",
 #'   "hg19" or "hg38", etc.
-#' @param hg_to The genome are coverting to. This parameter can be "hg18",
+#' @param hg_to Which type the genome is converting to. This parameter can be "hg18",
 #'   "hg19" or "hg38", etc. NOTICE \code{hg_from} and \code{hg_to} should be
 #'   different from each other.
 #'
@@ -41,11 +41,36 @@ trans_cor <- function(peak, hg_from, hg_to) {
     url <- sprintf(
       "http://hgdownload.cse.ucsc.edu/goldenPath/%s/liftOver/%s.gz",
       hg_from, file_name)
-    download.file(url, gz_name)
+    .trans_hg_download(url, gz_name)
     gunzip(gz_name)
   }
   path <- system.file(package="primirTSS", "extdata", file_name)
   ch = import.chain(path)
   suppressWarnings(unlist(liftOver(peak, ch)))
 }
+
+
+.trans_hg_download <- function(url, gz_name, download.file, N.TRIES=3L) {
+  N.TRIES <- as.integer(N.TRIES)
+  stopifnot(length(N.TRIES) == 1L, !is.na(N.TRIES))
+
+  while (N.TRIES > 0L) {
+    result <- tryCatch(utils::download.file(url, gz_name), error=identity)
+    if (!inherits(result, "error"))
+      break
+    N.TRIES <- N.TRIES - 1L
+  }
+
+  if (N.TRIES == 0L) {
+    stop("'trans_cor()' failed:",
+         "\n  URL: ", url,
+         "\n  error: ", conditionMessage(result))
+  }
+
+  result
+}
+
+
+
+
 
