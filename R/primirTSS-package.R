@@ -14,15 +14,6 @@
 #'   See \code{\link{run_primirTSSapp}}
 #'   to predict TSSs of miRNA using graphical web interface.
 #'
-#'
-#' @examples
-#'
-#' ownmiRNA <- find_tss(bed_merged, expressed_mir = "hsa-mir-5697",
-#'                      ignore_DHS_check = TRUE,
-#'                      expressed_gene = "all",
-#'                      allmirgene_byforce = TRUE)
-#'
-#'
 #' @section Author(s):
 #'
 #'   Maintainer: Pumin Li \code{\link{ipumin@163.com}}

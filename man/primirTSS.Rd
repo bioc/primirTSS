@@ -29,15 +29,6 @@ the previous non-cell-specific methods on miRNA TSSs.
   Other contributors: Qi Xu \code{\link{xuqi@vip.qq.com}}
 }
 
-\examples{
-
-ownmiRNA <- find_tss(bed_merged, expressed_mir = "hsa-mir-5697",
-                     ignore_DHS_check = TRUE,
-                     expressed_gene = "all",
-                     allmirgene_byforce = TRUE)
-
-
-}
 \seealso{
 Useful links:
   [Xu HUA et al]\link{https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btw171)}
