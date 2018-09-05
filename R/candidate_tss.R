@@ -1,8 +1,8 @@
 #' @importFrom phastCons100way.UCSC.hg38 phastCons100way.UCSC.hg38
 #' @importFrom GenomicScores gscores
-#' @importFrom GenomicRanges GRanges
-#' @importFrom dplyr group_by
-#' @importFrom dplyr ungroup
+#' @rawNamespace import(dplyr, except=c("intersect", "setdiff", "union", "combine"))
+#' @import BiocGenerics
+#' @import GenomicRanges
 
 
 phast_score <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
@@ -61,8 +61,6 @@ phast_score_plot <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
 #' @importFrom IRanges findOverlaps
 #' @importFrom S4Vectors queryHits
 #' @importFrom S4Vectors subjectHits
-#' @importFrom BiocGenerics start
-#' @importFrom BiocGenerics end
 #'
 check_DHS_s <- function(chrom, strand, tss_p1, tss_p2, DHS) {
 

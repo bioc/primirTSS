@@ -1,7 +1,4 @@
-#' @importFrom dplyr mutate
-#' @importFrom dplyr data_frame
 #' @importFrom stringr str_split
-#' @importFrom dplyr filter
 #' @importFrom tidyr unite
 #' @importFrom tidyr separate
 #' @importFrom BSgenome.Hsapiens.UCSC.hg38 Hsapiens

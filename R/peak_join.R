@@ -35,8 +35,6 @@
 #'
 #' peak_join(peak1, peak2)
 #'
-#' @importFrom GenomicRanges findOverlaps
-#' @importFrom GenomicRanges intersect
 #' @importFrom S4Vectors queryHits
 #' @importFrom S4Vectors subjectHits
 #' @export

@@ -1,6 +1,5 @@
 #' @importFrom stringr str_detect
 #' @importFrom stringr str_split
-#' @importFrom dplyr bind_cols
 
 extand_df <- function(df, colnm, sep = ":") {
   info <- df[[colnm]]

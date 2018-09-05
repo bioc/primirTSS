@@ -1,9 +1,4 @@
-#' @importFrom dplyr %>%
-#' @importFrom dplyr select
-#' @importFrom dplyr bind_cols
-#' @importFrom dplyr filter
-#' @importFrom dplyr mutate
-#'
+
 
 find_nearest_peak <- function(peak, expressed_mir = "all") {
   peak <- as.data.frame(peak)

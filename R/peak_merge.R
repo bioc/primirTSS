@@ -22,12 +22,7 @@
 #'
 #' peak_merge(peak, n =250)
 #'
-#' @importFrom GenomicRanges end<-
-#' @importFrom GenomicRanges end
-#' @importFrom GenomicRanges reduce
-#' @importFrom GenomicRanges GRanges
 #' @importFrom rtracklayer chrom
-#' @importFrom BiocGenerics strand
 #' @importFrom Gviz seqnames
 #' @importFrom Gviz symbol
 #' @export

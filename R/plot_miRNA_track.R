@@ -1,4 +1,3 @@
-#' @importFrom dplyr bind_rows
 #' @importFrom Gviz GeneRegionTrack
 #' @importFrom Gviz DataTrack
 #'

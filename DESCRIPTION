@@ -39,4 +39,6 @@ Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
 biocViews: Sequencing, RNASeq, Genetics, Preprocessing, Transcription, GeneRegulation
+URL: https://github.com/ipumin/primirTSS
+BugReports: http://github.com/ipumin/primirTSS/issues
 
