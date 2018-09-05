@@ -31,8 +31,6 @@ peak_df <- data.frame(chrom = c("chr7", "chr7", "chr7"),
                       stringsAsFactors = FALSE)
 peak <-  as(peak_df, "GRanges")
 
-\dontrun{
 trans_cor(peak, "hg19", "hg38")
-}
 
 }

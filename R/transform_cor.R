@@ -22,9 +22,7 @@
 #'                       stringsAsFactors = FALSE)
 #' peak <-  as(peak_df, "GRanges")
 #'
-#' \dontrun{
 #' trans_cor(peak, "hg19", "hg38")
-#' }
 #'
 #' @importFrom stringr str_to_title
 #' @importFrom R.utils gunzip
