@@ -25,15 +25,14 @@ Convert coordinates between different genomes when necessary.
 }
 \examples{
 
-\dontrun{
 peak_df <- data.frame(chrom = c("chr7", "chr7", "chr7"),
                       chromStart = c(128043908, 128045075, 128046242),
                       chromEnd = c(128045074, 128046241, 128047408),
                       stringsAsFactors = FALSE)
 peak <-  as(peak_df, "GRanges")
 
+\dontrun{
 trans_cor(peak, "hg19", "hg38")
-
 }
 
 }
