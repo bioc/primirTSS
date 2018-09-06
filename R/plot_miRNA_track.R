@@ -192,6 +192,8 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
 #' plot_primiRNA(expressed_mir, bed_merged)
 #' }
 #'
+#' @importFrom rtracklayer chrom
+#' @importFrom Gviz symbol
 #' @export
 
 plot_primiRNA <- function(expressed_mir, bed_merged,
