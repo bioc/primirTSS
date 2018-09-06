@@ -12,7 +12,6 @@
 #' @return A GRanges object. The merged peaks for the following analysis to
 #'   search for TSSs.
 #'
-#'
 #' @examples
 #' peak_df <- data.frame(chrom = c("chr1", "chr2", "chr1"),
 #'                       chromStart = c(450, 460, 680),

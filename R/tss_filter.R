@@ -1,5 +1,5 @@
-tss_single_judge <- function(stem_loop_p1, stem_loop_p2, chrom, strand, tss_p1,
-                             tss_p2, gene_loci) {
+tss_single_judge2 <- function(stem_loop_p1, stem_loop_p2, chrom, strand, tss_p1,
+                              tss_p2, gene_loci) {
 
   gene_df <- gene_loci[gene_loci$chrom == chrom & gene_loci$strand == strand, ]
 
@@ -8,8 +8,7 @@ tss_single_judge <- function(stem_loop_p1, stem_loop_p2, chrom, strand, tss_p1,
   if (any(intra_index)) {
     gene_intra <- gene_df[intra_index, ]
     closest_tss <- lapply(gene_intra$gene_start, function(x) {
-      min(abs(x - tss_p1), abs(x - tss_p2))
-      }) %>%
+      min(abs(x - tss_p1), abs(x - tss_p2))}) %>%
       unlist()
     in_tss <- (gene_intra$gene_start - tss_p1) *
       (gene_intra$gene_start - tss_p2) < 0
@@ -34,19 +33,32 @@ tss_single_judge <- function(stem_loop_p1, stem_loop_p2, chrom, strand, tss_p1,
                         tss_site,
                         sep = "__")
       } else {
-        result <- "abandon01"
+        distance <- abs(tss_site - gene_intra$gene_start)
+        gene_intra_2_index <- which.min(distance)
+        result <- paste("intra__intra_TSS2",
+                        gene_intra$gene_id[gene_intra_2_index],
+                        tss_site,
+                        sep = "__")
       }
     }
   } else {
     closest_tss <- lapply(gene_df$gene_start, function(x) {
       min(abs(x - tss_p1), abs(x - tss_p2))
-      }) %>%
+    }) %>%
       unlist()
     in_tss <- (gene_df$gene_start - tss_p1) * (gene_df$gene_start - tss_p2) < 0
     colsest_index <- closest_tss <= 150 | in_tss
 
     if (any(colsest_index)) {
-      result <- "abandon02"
+      tss_site <- ifelse(strand == "+", tss_p2, tss_p1)
+      mir_end <- ifelse(strand == "+", stem_loop_p2, stem_loop_p1)
+
+      distance <- abs(tss_site - gene_df$gene_start)
+      gene_inter_index <- which.min(distance)
+      result <- paste("inter__overlap_inter_TSS2",
+                      gene_df$gene_id[gene_inter_index],
+                      tss_site,
+                      sep = "__")
     } else {
       tss_site <- ifelse(strand == "+", tss_p2, tss_p1)
       mir_end <- ifelse(strand == "+", stem_loop_p2, stem_loop_p1)
@@ -54,7 +66,12 @@ tss_single_judge <- function(stem_loop_p1, stem_loop_p2, chrom, strand, tss_p1,
         (mir_end - gene_df$gene_start) < 0
 
       if (any(gene_tss_trans_index)) {
-        result <- "abandon03"
+        distance <- abs(tss_site - gene_df$gene_start)
+        gene_inter_index <- which.min(distance)
+        result <- paste("inter__overlap_inter_TSS2",
+                        gene_df$gene_id[gene_inter_index],
+                        tss_site,
+                        sep = "__")
       } else {
         gene_end <- ifelse(gene_df$strand == "+", gene_df$gene_p2,
                            gene_df$gene_p1)
@@ -80,7 +97,6 @@ tss_single_judge <- function(stem_loop_p1, stem_loop_p2, chrom, strand, tss_p1,
   }
   result
 }
-
 
 
 tss_filter <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,

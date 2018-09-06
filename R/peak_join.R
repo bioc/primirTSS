@@ -5,17 +5,15 @@
 #' of these two different kinds of ChIP-seq data are available.
 #'
 #' @param peak1 H3K4me3 peaks. Merged peak data as \code{GRange} object by
-#'   fucntion {peak_merge}
+#'   fucntion \code{peak_merge}
 #' @param peak2 Pol II peaks. Merged peak data as \code{GRange} object by
-#'   fucntion {peak_merge}
+#'   fucntion \code{peak_merge}
 #'
 #' @section Detail: Peak1 and peak2 are signals seperately from the ChIP-seq
 #'   data of H3K4me3 and Pol II data that to be integrated. The data is
 #'   \code{GRange} object containing three columns \code{Chrom}, \code{Ranges},
 #'   \code{Strand}. And the order of these two kinds of data when input as
 #'   \code{peak1} and \code{peak2} can be swapped.
-#'
-#' @seealso {peak_merge}
 #'
 #' @return A GRanges object. The joined peaks for the following analysis to
 #'   search for TSSs.

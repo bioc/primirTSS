@@ -8,10 +8,10 @@ peak_join(peak1, peak2)
 }
 \arguments{
 \item{peak1}{H3K4me3 peaks. Merged peak data as \code{GRange} object by
-fucntion {peak_merge}}
+fucntion \code{peak_merge}}
 
 \item{peak2}{Pol II peaks. Merged peak data as \code{GRange} object by
-fucntion {peak_merge}}
+fucntion \code{peak_merge}}
 }
 \value{
 A GRanges object. The joined peaks for the following analysis to
@@ -45,7 +45,4 @@ peak2 <-  as(peak_df2, "GRanges")
 
 peak_join(peak1, peak2)
 
-}
-\seealso{
-{peak_merge}
 }

@@ -1,5 +1,3 @@
-
-
 find_nearest_peak <- function(peak, expressed_mir = "all") {
   peak <- as.data.frame(peak)
   peak <- peak %>%

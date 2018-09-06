@@ -315,7 +315,7 @@ plot_primiRNA(expressed_mir, bed_merged,
 
 </br>
 
-![plot_tss](http://ww1.sinaimg.cn/large/69a1995bly1ftkytnqlw3j20l90ikdga.jpg)
+![plot_tss](../inst/extdata/pic/plot_tss.jpg)
 　
 　Figure S1. _**Visualized result for miRNA TSSs by `Plot pri-miRNA TSS()`**_
 
@@ -351,7 +351,7 @@ mentioned above for details.
 
 ### TAG1: Find the best putative TSS
 
-![shiny_tss](http://ww1.sinaimg.cn/mw690/69a1995bly1ftlbrh1t6gj219o1ammzs.jpg)
+![shiny_tss](../inst/extdata/pic/shiny_tss.jpg)
 　Figure S2. _**Graphical web interface of `Find pri-miRNA TSS()`**_
 
 
@@ -378,7 +378,7 @@ they will have an additional column, `tf`, which stores related TFs.
 
 ### TAG2: Plot pri-miRNA TSS
 
-![shiny_plot](http://ww1.sinaimg.cn/mw690/69a1995bly1ftl9o5f2p0j21a113cmze.jpg)
+![shiny_plot](../inst/extdata/pic/shiny_plot.jpg)
 　Figure S3. _**Graphical web interface of `Plot pri-miRNA TSS()`**_
 
 
