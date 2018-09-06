@@ -1,7 +1,3 @@
-#' @importFrom Gviz GeneRegionTrack
-#' @importFrom Gviz DataTrack
-#'
-
 plot_primiRNA_track <- function(expressed_mir, bed_merged,
                           flanking_num = 1000, threshold = 0.7,
                           ignore_DHS_check = TRUE,
@@ -64,7 +60,7 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
     bind_rows(tss_tmp)
 
   chr <- unique(tss_p$chrom)
-  tsstrack <- GeneRegionTrack(tss_p, genome = genome_version,
+  tsstrack <- Gviz::GeneRegionTrack(tss_p, genome = genome_version,
                              chromosome = chr, name = "pri-miRNA",
                              showId = TRUE,
                              transcriptAnnotation = "symbol",
@@ -74,7 +70,7 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
   gene_p <- gene_loci[gene_loci$gene_id == tss$gene, ] %>%
     mutate(symbol = gene_id) %>%
     select(start = gene_p1, end = gene_p2, strand, symbol)
-  genetrack <- GeneRegionTrack(gene_p, genome = genome_version,
+  genetrack <- Gviz::GeneRegionTrack(gene_p, genome = genome_version,
                                chromosome = chr, name = "Ensemble genes",
                                shape = "arrow",
                                collapseTranscripts = "meta",
@@ -86,7 +82,7 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
            end = tss_p2) %>%
     select(start, end, strand, data = eponine_score)
 
-  e_track = DataTrack(range = eponine_p, genome = genome_version,
+  e_track = Gviz::DataTrack(range = eponine_p, genome = genome_version,
                       chromosome = chr,
                       name = "eponine score",
                       type = "h",
@@ -98,7 +94,7 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
            end = tss_p2) %>%
     select(start, end, strand, data = phast_score)
 
-  con_track = DataTrack(range = con_p, genome = genome_version,
+  con_track = Gviz::DataTrack(range = con_p, genome = genome_version,
                       chromosome = chr,
                       name = "conservation score",
                       type = "h",
@@ -196,9 +192,6 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
 #' plot_primiRNA(expressed_mir, bed_merged)
 #' }
 #'
-#' @importFrom Gviz IdeogramTrack
-#' @importFrom Gviz GenomeAxisTrack
-#' @importFrom Gviz plotTracks
 #' @export
 
 plot_primiRNA <- function(expressed_mir, bed_merged,
@@ -216,8 +209,8 @@ plot_primiRNA <- function(expressed_mir, bed_merged,
                                allmirgene_byforce)
 
   genome_version <- "hg38"
-  itrack <- IdeogramTrack(genome = genome_version, showBandId = TRUE, name = "")
-  axistrack <- GenomeAxisTrack(add53=TRUE, exponent=0,
+  itrack <- Gviz::IdeogramTrack(genome = genome_version, showBandId = TRUE, name = "")
+  axistrack <- Gviz::GenomeAxisTrack(add53=TRUE, exponent=0,
                                littleTicks=TRUE, name=genome_version)
 
   tsstrack <- track$tsstrack
@@ -228,7 +221,7 @@ plot_primiRNA <- function(expressed_mir, bed_merged,
   START <- track$min_loci
   END <- track$max_loci
 
-  plotTracks(
+  Gviz::plotTracks(
     list(itrack,
          axistrack,
          tsstrack,

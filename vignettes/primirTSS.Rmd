@@ -154,7 +154,7 @@ DHS <- read.csv(DHSfile, stringsAsFactors = FALSE)
 peak_h3 <-  as(peak_h3, "GRanges")
 peak <- peak_merge(peak_h3)
 ```
-```{r, eval=FALSE}
+```
 no_ownmiRNA <- find_tss(peak, ignore_DHS_check = FALSE,
                         DHS = DHS, allmirdhs_byforce = FALSE,
                         expressed_gene = "all",
