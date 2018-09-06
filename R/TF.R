@@ -1,8 +1,4 @@
-#' @importFrom TFBSTools getMatrixSet
-#' @importFrom TFBSTools toPWM
 #' @importFrom Biostrings readDNAStringSet
-#' @importFrom TFBSTools searchSeq
-#' @importFrom TFBSTools writeGFF3
 #' @importFrom stringr str_remove
 #' @importFrom tibble as_tibble
 #' @importFrom JASPAR2018 JASPAR2018
@@ -43,13 +39,13 @@ mir_tf <- function(mir_name, chrom, strand, predicted_tss,
 
   opts <- list()
   opts[["species"]] <- "9606"
-  pfms <- getMatrixSet(JASPAR2018, opts)
-  pwms <- toPWM(pfms)
+  pfms <- TFBSTools::getMatrixSet(JASPAR2018, opts)
+  pwms <- TFBSTools::toPWM(pfms)
   fasta_read <- readDNAStringSet(tmp_path)
 
   file.remove(tmp_path)
-  sitesetList <- searchSeq(pwms, fasta_read, strand="+", min.score)
-  a_GFF <- writeGFF3(sitesetList)
+  sitesetList <- TFBSTools::searchSeq(pwms, fasta_read, strand="+", min.score)
+  a_GFF <- TFBSTools::writeGFF3(sitesetList)
   result <- a_GFF %>%
     separate(attributes,
              into = c("TF", "TF_class", "TF_sequence"),

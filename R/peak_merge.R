@@ -21,9 +21,6 @@
 #'
 #' peak_merge(peak, n =250)
 #'
-#' @importFrom rtracklayer chrom
-#' @importFrom Gviz seqnames
-#' @importFrom Gviz symbol
 #' @export
 
 peak_merge <- function(peak, n = 250) {
