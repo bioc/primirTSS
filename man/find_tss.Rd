@@ -172,19 +172,4 @@ ownmiRNA <- find_tss(bed_merged, expressed_mir = "hsa-mir-5697",
                      allmirgene_byforce = TRUE)
 
 
-peakfile <- system.file("testdata", "HMEC_h3.csv", package = "primirTSS")
-DHSfile <- system.file("testdata", "HMEC_DHS.csv", package = "primirTSS")
-peak_df <- read.csv(peakfile, stringsAsFactors = FALSE)
-peak <- as(peak_df, "GRanges")
-DHS <- read.csv(DHSfile, stringsAsFactors = FALSE)
-DHS <- as(DHS, "GRanges")
-
-no_ownmiRNA <- find_tss(peak,
-                        ignore_DHS_check = FALSE,
-                        DHS = DHS,
-                        allmirdhs_byforce = FALSE,
-                        expressed_gene = "all",
-                        allmirgene_byforce = FALSE)
-
-
 }

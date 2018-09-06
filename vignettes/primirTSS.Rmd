@@ -151,6 +151,7 @@ peakfile <- system.file("testdata", "HMEC_h3.csv", package = "primirTSS")
 DHSfile <- system.file("testdata", "HMEC_DHS.csv", package = "primirTSS")
 peak_h3 <- read.csv(peakfile, stringsAsFactors = FALSE)
 DHS <- read.csv(DHSfile, stringsAsFactors = FALSE)
+DHS <- as(DHS, "GRanges")
 peak_h3 <-  as(peak_h3, "GRanges")
 peak <- peak_merge(peak_h3)
 ```
