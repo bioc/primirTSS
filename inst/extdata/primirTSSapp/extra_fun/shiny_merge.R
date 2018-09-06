@@ -20,3 +20,16 @@ env_shiny$find_tss2 <- function(bed_merged, expressed_mir = "all",
            expressed_gene, allmirgene_byforce, seek_tf,
            tf_n, min.score)
 }
+
+env_shiny$plot_primiRNA2 <- function(expressed_mir, bed_merged,
+                                     flanking_num = 1000, threshold = 0.7,
+                                     ignore_DHS_check = TRUE, DHS,
+                                     allmirdhs_byforce = TRUE,
+                                     expressed_gene = "all",
+                                     allmirgene_byforce = TRUE){
+  DHS <- GenomicRanges::makeGRangesFromDataFrame(DHS)
+  plot_primiRNA(expressed_mir, bed_merged, flanking_num, threshold,
+                ignore_DHS_check, DHS, allmirdhs_byforce,
+                expressed_gene = "all", allmirgene_byforce = TRUE)
+}
+

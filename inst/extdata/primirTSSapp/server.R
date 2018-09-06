@@ -164,7 +164,7 @@ function(input, output) {
         }
 
         incProgress(0.6)
-        track <- plot_primiRNA(input$file3.2, bed_merged,
+        track <- env_shiny$plot_primiRNA2(input$file3.2, bed_merged,
                                      flanking_num = input$flanking_num.2,
                                      threshold = input$threshold.2,
                                      ignore_DHS_check,
