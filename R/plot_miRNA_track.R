@@ -52,30 +52,32 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
   tss_tmp <- tss %>%
     mutate(start = predicted_tss,
            end = predicted_tss + 1,
-           symbol = "tss") %>%
-    select(chrom, start, end, strand, symbol)
+           symbol_name = "tss") %>%
+    select(chrom, start, end, strand, symbol_name)
   tss_p <- tss %>%
-    mutate(symbol = "stem-loop") %>%
-    select(chrom, start = stem_loop_p1, end = stem_loop_p2, strand, symbol) %>%
+    mutate(symbol_name = "stem-loop") %>%
+    select(chrom, start = stem_loop_p1, end = stem_loop_p2, strand, symbol_name) %>%
     bind_rows(tss_tmp)
 
   chr <- unique(tss_p$chrom)
   tsstrack <- Gviz::GeneRegionTrack(tss_p, genome = genome_version,
                              chromosome = chr, name = "pri-miRNA",
                              showId = TRUE,
-                             transcriptAnnotation = "symbol",
+                             symbol = tss_p$symbol_name,
                              just.group = "above",
                              showOverplotting = FALSE)
 
   gene_p <- gene_loci[gene_loci$gene_id == tss$gene, ] %>%
-    mutate(symbol = gene_id) %>%
-    select(start = gene_p1, end = gene_p2, strand, symbol)
+    mutate(symbol_name = gene_id) %>%
+    select(start = gene_p1, end = gene_p2, strand, symbol_name)
   genetrack <- Gviz::GeneRegionTrack(gene_p, genome = genome_version,
                                chromosome = chr, name = "Ensemble genes",
                                shape = "arrow",
                                collapseTranscripts = "meta",
                                just.group = "above",
-                               transcriptAnnotation = "symbol")
+                               showId = TRUE,
+                               showOverplotting = FALSE,
+                               symbol = gene_p$symbol_name)
 
   eponine_p <- ep_con %>%
     mutate(start = tss_p1,
@@ -193,7 +195,6 @@ plot_primiRNA_track <- function(expressed_mir, bed_merged,
 #' }
 #'
 #' @importFrom rtracklayer chrom
-#' @importFrom Gviz symbol
 #' @export
 
 plot_primiRNA <- function(expressed_mir, bed_merged,
