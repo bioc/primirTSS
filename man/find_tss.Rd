@@ -166,11 +166,9 @@ bed_merged <- data.frame(
                 stringsAsFactors = FALSE)
 bed_merged <- as(bed_merged, "GRanges")
 
-\dontrun{
 ownmiRNA <- find_tss(bed_merged, expressed_mir = "hsa-mir-5697",
                      ignore_DHS_check = TRUE,
                      expressed_gene = "all",
                      allmirgene_byforce = TRUE)
-}
 
 }
