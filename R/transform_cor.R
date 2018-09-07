@@ -36,15 +36,19 @@ trans_cor <- function(peak, hg_from, hg_to) {
   file_name <- sprintf("%sTo%s.over.chain", hg_from, str_to_title(hg_to))
   path <- file.path(system.file(package="primirTSS", "extdata"), file_name)
 
+  gz_name <- file.path(system.file(package="primirTSS", "extdata"),
+                       paste0(file_name, ".gz"))
+
   if (!file.exists(path)) {
-    gz_name <- file.path(system.file(package="primirTSS", "extdata"),
-                         paste0(file_name, ".gz"))
-    url <- sprintf(
-      "http://hgdownload.cse.ucsc.edu/goldenPath/%s/liftOver/%s.gz",
-      hg_from, file_name)
-    .trans_hg_download(url, gz_name)
+    if (!file.exists(gz_name)) {
+      url <- sprintf(
+        "http://hgdownload.cse.ucsc.edu/goldenPath/%s/liftOver/%s.gz",
+        hg_from, file_name)
+      .trans_hg_download(url, gz_name)
+    }
     gunzip(gz_name)
   }
+
   path <- system.file(package="primirTSS", "extdata", file_name)
   ch = import.chain(path)
   suppressWarnings(unlist(liftOver(peak, ch)))
