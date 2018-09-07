@@ -183,8 +183,7 @@ bed_merged <- data.frame(
 bed_merged <- as(bed_merged, "GRanges")
 
 expressed_mir <- c("hsa-mir-5697")
-```
-```
+
 ownmiRNA <- find_tss(bed_merged, expressed_mir = expressed_mir,
                      ignore_DHS_check = TRUE,
                      expressed_gene = "all",
@@ -217,7 +216,10 @@ Here is a demo of predicting TSS for hsa-mir-5697, ignore DHS check.
 
 **PART1**, `$tss_df`:
 
-![tss_df](../inst/extdata/pic/tss_df.png)
+```{r}
+ownmiRNA$tss_df
+```
+
 
 The first part of the result returns details of predicted TSSs, composed of 
 seven columns: 
