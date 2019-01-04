@@ -1,6 +1,6 @@
 Package: primirTSS
 Title: Prediction of pri-miRNA Transcription Start Site 
-Version: 1.0.0
+Version: 1.0.1
 Author: Pumin Li [aut, cre], Qi Xu [aut]
 Maintainer: Pumin Li <ipumin@163.com>
 Description: A fast, convenient tool to identify the TSSs of miRNAs by 
@@ -38,7 +38,7 @@ Imports:
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
-biocViews: Sequencing, RNASeq, Genetics, Preprocessing, Transcription, GeneRegulation
+biocViews: ImmunoOncology, Sequencing, RNASeq, Genetics, Preprocessing, Transcription, GeneRegulation
 URL: https://github.com/ipumin/primirTSS
 BugReports: http://github.com/ipumin/primirTSS/issues
 
