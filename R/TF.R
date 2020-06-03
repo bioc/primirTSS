@@ -8,7 +8,7 @@
 mir_tf <- function(mir_name, chrom, strand, predicted_tss,
                    tf_n = 1000, min.score = 0.8) {
 
-  tss_df <- data_frame(mir_name = mir_name,
+  tss_df <- tibble::tibble(mir_name = mir_name,
                        chrom = chrom,
                        strand = strand,
                        predicted_tss = predicted_tss)
@@ -63,5 +63,5 @@ mir_tf <- function(mir_name, chrom, strand, predicted_tss,
   s_mir_list <- split(result, result$seqname)
   tf <- lapply(s_mir_list, s_mir_tf) %>% unlist()
 
-  data_frame(mir_name = names(s_mir_list), tf = tf)
+  tibble::tibble(mir_name = names(s_mir_list), tf = tf)
 }

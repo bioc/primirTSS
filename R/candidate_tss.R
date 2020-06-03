@@ -8,7 +8,7 @@
 phast_score <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
                         strand, tss_p1, tss_p2, eponine_score) {
 
-  mir_eponine_score <- data_frame(mir_name = mir_name, chrom = chrom,
+  mir_eponine_score <- tibble::tibble(mir_name = mir_name, chrom = chrom,
                                   stem_loop_p1 = stem_loop_p1,
                                   stem_loop_p2 = stem_loop_p2,
                                   strand = strand, tss_p1 = tss_p1,
@@ -36,7 +36,7 @@ phast_score <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
 phast_score_plot <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
                              strand, tss_p1, tss_p2, eponine_score) {
 
-  mir_eponine_score <- data_frame(mir_name = mir_name, chrom = chrom,
+  mir_eponine_score <- tibble::tibble(mir_name = mir_name, chrom = chrom,
                                   stem_loop_p1 = stem_loop_p1,
                                   stem_loop_p2 = stem_loop_p2,
                                   strand = strand, tss_p1 = tss_p1,
@@ -101,7 +101,7 @@ check_DHS_s <- function(chrom, strand, tss_p1, tss_p2, DHS) {
 check_DHS_df <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
                          strand, tss_p1, tss_p2, eponine_score, DHS) {
 
-  x <- data_frame(mir_name = mir_name, chrom = chrom,
+  x <- tibble::tibble(mir_name = mir_name, chrom = chrom,
                   stem_loop_p1 = stem_loop_p1,
                   stem_loop_p2 = stem_loop_p2,
                   strand = strand, tss_p1 = tss_p1,
@@ -144,7 +144,7 @@ find_candidate_tss <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
                                ignore_DHS_check = TRUE,
                                DHS, allmirdhs_byforce = TRUE) {
 
-  mir_eponine_score <- data_frame(mir_name = mir_name, chrom = chrom,
+  mir_eponine_score <- tibble::tibble(mir_name = mir_name, chrom = chrom,
                                   stem_loop_p1 = stem_loop_p1,
                                   stem_loop_p2 = stem_loop_p2,
                                   strand = strand, tss_p1 = tss_p1,
@@ -198,7 +198,7 @@ find_candidate_tss_plot <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
                                     ignore_DHS_check = TRUE,
                                     DHS, allmirdhs_byforce = TRUE) {
 
-  mir_eponine_score <- data_frame(mir_name = mir_name, chrom = chrom,
+  mir_eponine_score <- tibble::tibble(mir_name = mir_name, chrom = chrom,
                                   stem_loop_p1 = stem_loop_p1,
                                   stem_loop_p2 = stem_loop_p2,
                                   strand = strand, tss_p1 = tss_p1,

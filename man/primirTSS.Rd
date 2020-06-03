@@ -3,7 +3,6 @@
 \docType{package}
 \name{primirTSS}
 \alias{primirTSS}
-\alias{primirTSS-package}
 \title{primirTSS: Search for putative TSSs of miRNA}
 \description{
 A fast, convenient tool to identify the TSSs of miRNAs

@@ -4,11 +4,20 @@
 \alias{find_tss}
 \title{Predict TSSs of miRNA}
 \usage{
-find_tss(bed_merged, expressed_mir = "all", flanking_num = 1000,
-  threshold = 0.7, ignore_DHS_check = TRUE, DHS,
-  allmirdhs_byforce = TRUE, expressed_gene = "all",
-  allmirgene_byforce = TRUE, seek_tf = FALSE, tf_n = 1000,
-  min.score = 0.8)
+find_tss(
+  bed_merged,
+  expressed_mir = "all",
+  flanking_num = 1000,
+  threshold = 0.7,
+  ignore_DHS_check = TRUE,
+  DHS,
+  allmirdhs_byforce = TRUE,
+  expressed_gene = "all",
+  allmirgene_byforce = TRUE,
+  seek_tf = FALSE,
+  tf_n = 1000,
+  min.score = 0.8
+)
 }
 \arguments{
 \item{bed_merged}{Peaks from ChIP-seq data to be provided for analysis can be

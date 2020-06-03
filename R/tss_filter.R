@@ -103,7 +103,7 @@ tss_filter <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
                        strand, tss_p1, tss_p2, expressed_gene = "all",
                        allmirgene_byforce = TRUE) {
 
-  candidate_tss <- data_frame(mir_name = mir_name, chrom = chrom,
+  candidate_tss <- tibble::tibble(mir_name = mir_name, chrom = chrom,
                               stem_loop_p1 = stem_loop_p1,
                               stem_loop_p2 = stem_loop_p2,
                               strand = strand, tss_p1 = tss_p1,

@@ -23,7 +23,7 @@ require_fa <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
                        strand, peak_p1, peak_p2, histone_p1_flank,
                        histone_p2_flank) {
 
-  mir_flank <- data_frame(mir_name = mir_name, chrom = chrom,
+  mir_flank <- tibble::tibble(mir_name = mir_name, chrom = chrom,
                           stem_loop_p1 = stem_loop_p1,
                           stem_loop_p2 = stem_loop_p2, strand = strand,
                           peak_p1 = peak_p1, peak_p2 = peak_p2,
@@ -50,7 +50,7 @@ eponine_score <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
                           strand, peak_p1, peak_p2, flanking_num = 1000,
                           threshold = 0.7) {
 
-  mir_peaks <- data_frame(mir_name = mir_name, chrom = chrom,
+  mir_peaks <- tibble::tibble(mir_name = mir_name, chrom = chrom,
                           stem_loop_p1 = stem_loop_p1,
                           stem_loop_p2 = stem_loop_p2, strand = strand,
                           peak_p1 = peak_p1, peak_p2 = peak_p2)
@@ -76,7 +76,7 @@ eponine_score <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
   a_tmp <- aa[-seq_len(3)] %>%
     str_split("\t", simplify = TRUE)
 
-  result <- data_frame(previous = a_tmp[, 1],
+  result <- tibble::tibble(previous = a_tmp[, 1],
                        tss_p1 = a_tmp[, 4],
                        tss_p2 = a_tmp[, 5],
                        eponine_score = a_tmp[, 6]) %>%

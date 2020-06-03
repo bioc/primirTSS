@@ -4,10 +4,17 @@
 \alias{plot_primiRNA}
 \title{Plot the result of prediction for miRNA}
 \usage{
-plot_primiRNA(expressed_mir, bed_merged, flanking_num = 1000,
-  threshold = 0.7, ignore_DHS_check = TRUE, DHS,
-  allmirdhs_byforce = TRUE, expressed_gene = "all",
-  allmirgene_byforce = TRUE)
+plot_primiRNA(
+  expressed_mir,
+  bed_merged,
+  flanking_num = 1000,
+  threshold = 0.7,
+  ignore_DHS_check = TRUE,
+  DHS,
+  allmirdhs_byforce = TRUE,
+  expressed_gene = "all",
+  allmirgene_byforce = TRUE
+)
 }
 \arguments{
 \item{expressed_mir}{This parameter allows users to specify certain miRNAs,
