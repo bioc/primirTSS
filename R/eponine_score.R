@@ -30,8 +30,9 @@ require_fa <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
                           histone_p1_flank = histone_p1_flank,
                           histone_p2_flank = histone_p2_flank)
   tcga <- mir_flank %>%
-    select(chrom, start = histone_p1_flank, end = histone_p2_flank, strand) %>%
-    pmap(cor_tdga) %>%
+    dplyr::select(chrom, start = histone_p1_flank,
+                  end = histone_p2_flank, strand) %>%
+    purrr::pmap(cor_tdga) %>%
     unlist()
 
   line1 <- mir_flank %>%
@@ -49,15 +50,17 @@ require_fa <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
 eponine_score <- function(mir_name, chrom, stem_loop_p1, stem_loop_p2,
                           strand, peak_p1, peak_p2, flanking_num = 1000,
                           threshold = 0.7) {
-
+  `%>%` <- magrittr::`%>%`
   mir_peaks <- tibble::tibble(mir_name = mir_name, chrom = chrom,
                           stem_loop_p1 = stem_loop_p1,
                           stem_loop_p2 = stem_loop_p2, strand = strand,
                           peak_p1 = peak_p1, peak_p2 = peak_p2)
 
   mir_flank <- mir_peaks %>%
-    mutate(histone_p1_flank = peak_p1 - flanking_num,
-           histone_p2_flank = peak_p2 + flanking_num)
+    dplyr::mutate(
+      histone_p1_flank = peak_p1 - flanking_num,
+      histone_p2_flank = peak_p2 + flanking_num
+    )
 
   a <- require_fa(mir_flank$mir_name, mir_flank$chrom,
                   mir_flank$stem_loop_p1, mir_flank$stem_loop_p2,

@@ -1,10 +1,13 @@
 find_nearest_peak <- function(peak, expressed_mir = "all") {
+  `%>%` <- magrittr::`%>%`
   peak <- as.data.frame(peak)
   peak <- peak %>%
-    mutate(chrom = as.character(seqnames),
-           start = as.double(start),
-           end = as.double(end)) %>%
-    select(chrom, start, end)
+    dplyr::mutate(
+      chrom = as.character(seqnames),
+      start = as.double(start),
+      end = as.double(end)
+    ) %>%
+    dplyr::select(chrom, start, end)
 
   peak_list <- split(peak, peak$chrom)
 
@@ -48,8 +51,9 @@ find_nearest_peak <- function(peak, expressed_mir = "all") {
     }
 
     index <- as.double(index)
-
-    tmp_df <- bind_cols(tmp_mir, tmp_peak[index, ])
+    tmp_peak2 <- tmp_peak[index, ]
+    colnames(tmp_peak2) <- c("chrom1", "start1", 'end1')
+    tmp_df <- dplyr::bind_cols(tmp_mir, tmp_peak2)
     index1 <-
       ((tmp_df$mir_start - tmp_df$start1) * (tmp_df$mir_start - tmp_df$end1)) <=
       0
@@ -59,8 +63,9 @@ find_nearest_peak <- function(peak, expressed_mir = "all") {
       tmp_df[(index1 & tmp_df$strand == "-"), ]$mir_start + 1
 
     split_result[[i]] <- tmp_df %>%
-      select(mir_name, chrom, stem_loop_p1 = start, stem_loop_p2 = end, strand,
-             peak_p1 = start1, peak_p2 = end1)
+      dplyr::select(mir_name, chrom, stem_loop_p1 = start,
+                    stem_loop_p2 = end, strand,
+                    peak_p1 = start1, peak_p2 = end1)
   }
 
   success_tf <- Reduce(rbind, split_result)
